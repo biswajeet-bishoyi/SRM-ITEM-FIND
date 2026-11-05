@@ -259,3 +259,4 @@ def generate_all_images():
 
 if __name__ == "__main__":
     generate_all_images()
+

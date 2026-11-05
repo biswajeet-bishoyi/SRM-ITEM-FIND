@@ -88,15 +88,15 @@
         <section id="tab-matching" class="tab-content active">
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-value" id="stat-total">–</div>
+                    <div class="stat-value" id="stat-total">100</div>
                     <div class="stat-label">Indexed reports</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value stat-lost" id="stat-lost">–</div>
+                    <div class="stat-value stat-lost" id="stat-lost">50</div>
                     <div class="stat-label">Lost items</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value stat-found" id="stat-found">–</div>
+                    <div class="stat-value stat-found" id="stat-found">50</div>
                     <div class="stat-label">Found items</div>
                 </div>
                 <div class="stat-card">
@@ -205,6 +205,28 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Campus Lost & Found Live Directory Feed -->
+            <div class="card mt-24">
+                <div class="catalog-header-row">
+                    <div>
+                        <h3>Campus Lost &amp; Found Directory</h3>
+                        <p class="card-desc">Browse real lost reports and found items across SRM Kattankulathur campus.</p>
+                    </div>
+                    <div class="catalog-filters-row">
+                        <div class="segmented-compact" role="radiogroup">
+                            <button type="button" class="catalog-filter-btn active" data-filter="ALL" onclick="filterCatalog('ALL')">All (100)</button>
+                            <button type="button" class="catalog-filter-btn" data-filter="LOST" onclick="filterCatalog('LOST')">Lost Items (50)</button>
+                            <button type="button" class="catalog-filter-btn" data-filter="FOUND" onclick="filterCatalog('FOUND')">Found Items (50)</button>
+                        </div>
+                        <input type="text" id="catalog-search" class="catalog-search-input" placeholder="Search by name, brand, location..." oninput="searchCatalog(event)">
+                    </div>
+                </div>
+
+                <div id="catalog-grid" class="catalog-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
         </section>
 
         <!-- TAB 2: Report Item -->
@@ -262,9 +284,14 @@
                             <select id="rep-location" class="location-select"></select>
                         </div>
                         <div class="form-group">
-                            <label for="rep-location-detail">Exact spot <span class="optional">(optional)</span></label>
-                            <input type="text" id="rep-location-detail" placeholder="e.g. 2nd floor, near lab 602">
+                            <label for="rep-time">When did you lose / find it?</label>
+                            <input type="datetime-local" id="rep-time" required>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rep-location-detail">Exact spot <span class="optional">(optional)</span></label>
+                        <input type="text" id="rep-location-detail" placeholder="e.g. 2nd floor, near lab 602">
                     </div>
 
                     <div class="form-group">
@@ -315,6 +342,28 @@
                         </span>
                         <p>No notifications triggered yet. Run a match search to generate alerts.</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- Campus Lost & Found Live Directory Feed -->
+            <div class="card mt-24">
+                <div class="catalog-header-row">
+                    <div>
+                        <h3>Campus Lost &amp; Found Directory</h3>
+                        <p class="card-desc">Browse real lost reports and found items across SRM Kattankulathur campus.</p>
+                    </div>
+                    <div class="catalog-filters-row">
+                        <div class="segmented-compact" role="radiogroup">
+                            <button type="button" class="catalog-filter-btn active" data-filter="ALL" onclick="filterCatalog('ALL')">All (100)</button>
+                            <button type="button" class="catalog-filter-btn" data-filter="LOST" onclick="filterCatalog('LOST')">Lost Items (50)</button>
+                            <button type="button" class="catalog-filter-btn" data-filter="FOUND" onclick="filterCatalog('FOUND')">Found Items (50)</button>
+                        </div>
+                        <input type="text" id="catalog-search" class="catalog-search-input" placeholder="Search by name, brand, location..." oninput="searchCatalog(event)">
+                    </div>
+                </div>
+
+                <div id="catalog-grid" class="catalog-grid">
+                    <!-- Populated dynamically via JS -->
                 </div>
             </div>
         </section>

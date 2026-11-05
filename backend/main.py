@@ -73,16 +73,34 @@ def init_app():
         text_encoder = TransformerTextEncoder()
         image_encoder = ImageEncoder()
         fusion_engine = MultimodalFusionEngine()
-        notification_manager = NotificationManager(confidence_threshold=0.50)
+        notification_manager = NotificationManager(confidence_threshold=0.60)
         vector_db = VectorDatabase()
 
         corpus = [r["description"] for r in dataset]
         text_encoder.fit_fallback(corpus)
 
-        for item in dataset:
-            t_emb = text_encoder.encode(item["description"])
-            i_emb = image_encoder.encode(item["image_filename"])
-            vector_db.add_record(item, t_emb, i_emb)
+        cache_path = os.path.join(PROJECT_ROOT, "data", "processed", "precomputed_embeddings.npz")
+        loaded_from_cache = False
+        if os.path.exists(cache_path):
+            try:
+                import numpy as np
+                cached = np.load(cache_path)
+                t_embs = cached["text_embs"]
+                i_embs = cached["image_embs"]
+                if len(t_embs) == len(dataset):
+                    for idx, item in enumerate(dataset):
+                        t_emb = t_embs[idx]
+                        i_emb = i_embs[idx] if np.any(i_embs[idx]) else None
+                        vector_db.add_record(item, t_emb, i_emb)
+                    loaded_from_cache = True
+            except Exception as ce:
+                print(f"[init_app] Cache load error: {ce}")
+
+        if not loaded_from_cache:
+            for item in dataset:
+                t_emb = text_encoder.encode(item["description"])
+                i_emb = image_encoder.encode(item["image_filename"])
+                vector_db.add_record(item, t_emb, i_emb)
         is_initialized = True
     except Exception as e:
         startup_error = traceback.format_exc()
@@ -167,19 +185,78 @@ def build_report_record(report: ReportItemRequest, id_prefix: str) -> Dict[str, 
     return record
 
 
+def check_for_cross_matches(new_record: Dict[str, Any], target_status: str, min_confidence: float = 0.60) -> List[Dict[str, Any]]:
+    """Automatically find existing counter-reports matching this new report with >= min_confidence and trigger alerts."""
+    init_app()
+    alerts = []
+    if not vector_db:
+        return alerts
+    
+    from src.multimodal.fusion import compute_location_similarity, compute_time_similarity, compute_attribute_similarity
+    from src.genai.explanation_generator import GenAIExplanationEngine
+    from src.image_matching.encoder import ImageEncoder
+    
+    t_emb = text_encoder.encode(new_record["description"])
+    img = ImageEncoder.decode_data_url(new_record.get("image_data")) if new_record.get("image_data") else None
+    i_emb = image_encoder.encode(img) if img else None
+    
+    candidates = vector_db.search(t_emb[0], i_emb, target_status=target_status, top_k=5)
+    for cand, t_sim, i_sim in candidates:
+        if cand.get("id") == new_record.get("id"):
+            continue
+        loc_sim = compute_location_similarity(new_record.get("coordinates", [12.8231, 80.0442]), cand.get("coordinates", [12.8231, 80.0442]))
+        time_sim = compute_time_similarity(new_record.get("timestamp", ""), cand.get("timestamp", ""))
+        attr_sim = compute_attribute_similarity(new_record, cand)
+        
+        fused = fusion_engine.fuse(t_sim, i_sim, loc_sim, time_sim, attr_sim)
+        score = fused["final_score"]
+        
+        if score >= min_confidence:
+            explanation = GenAIExplanationEngine.generate_explanation(new_record, cand, fused)
+            notif = notification_manager.process_match_result(new_record, cand, fused, explanation)
+            alerts.append({
+                "match_score": round(score, 4),
+                "confidence_percent": int(round(score * 100)),
+                "matched_item": cand,
+                "explanation": explanation["explanation_text"],
+                "notification_id": notif.get("notification_id")
+            })
+    return alerts
+
+
 @app.post("/api/report/lost")
 def report_lost_item(report: ReportItemRequest):
-    # Run GenAI normalization
+    init_app()
+    from src.genai.explanation_generator import GenAINormalizerEngine
     if report.category == "other":
         report.category = GenAINormalizerEngine.normalize_description(report.description)["normalized_category"]
     record = build_report_record(report, "LOST")
-    return {"message": "Lost report created successfully", "record": record}
+    
+    # Automated notification triggered when match >= 60%
+    high_conf_matches = check_for_cross_matches(record, target_status="FOUND", min_confidence=0.60)
+    
+    return {
+        "message": "Lost report created successfully",
+        "record": record,
+        "high_confidence_matches": high_conf_matches,
+        "alert_triggered": len(high_conf_matches) > 0
+    }
 
 
 @app.post("/api/report/found")
 def report_found_item(report: ReportItemRequest):
+    init_app()
     record = build_report_record(report, "FOUND")
-    return {"message": "Found report created successfully", "record": record}
+    
+    # Automated notification check for owner when match >= 60%
+    high_conf_matches = check_for_cross_matches(record, target_status="LOST", min_confidence=0.60)
+    
+    return {
+        "message": "Found report created successfully",
+        "record": record,
+        "high_confidence_matches": high_conf_matches,
+        "alert_triggered": len(high_conf_matches) > 0
+    }
 
 
 @app.post("/api/search/matches")
@@ -267,6 +344,11 @@ def generate_synthetic_samples(item: str, color: str, brand: str, location: str)
 frontend_dir = os.path.join(PROJECT_ROOT, "frontend")
 if os.path.exists(frontend_dir):
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
+images_dir = os.path.join(PROJECT_ROOT, "data", "images")
+if os.path.exists(images_dir):
+    app.mount("/data/images", StaticFiles(directory=images_dir), name="images")
+    app.mount("/images", StaticFiles(directory=images_dir), name="images_alt")
 
 if os.path.exists(UPLOADS_DIR):
     app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
