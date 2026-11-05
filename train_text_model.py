@@ -95,3 +95,4 @@ def train_sentence_transformer(
 
 if __name__ == "__main__":
     train_sentence_transformer()
+

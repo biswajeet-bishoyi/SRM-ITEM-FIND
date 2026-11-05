@@ -428,3 +428,4 @@ if __name__ == "__main__":
     trainer = MultimodalTrainer()
     result = trainer.train_models()
     print("\n✅ Training complete! Model ready for production inference.")
+
