@@ -5,6 +5,7 @@ GenAI explanations, vector retrieval, and automated notifications.
 """
 
 import os
+import sys
 import json
 from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Form
@@ -12,6 +13,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
 from pydantic import BaseModel
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 from src.preprocessing.text_cleaner import clean_text, extract_structured_attributes
 from src.preprocessing.dataset_generator import generate_dataset
@@ -38,12 +43,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-UPLOADS_DIR = os.path.join(PROJECT_ROOT, "data", "uploads")
-os.makedirs(UPLOADS_DIR, exist_ok=True)
+if os.environ.get("VERCEL"):
+    UPLOADS_DIR = os.path.join("/tmp", "uploads")
+else:
+    UPLOADS_DIR = os.path.join(PROJECT_ROOT, "data", "uploads")
+
+try:
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
+except OSError:
+    UPLOADS_DIR = os.path.join("/tmp", "uploads")
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
 
 # Initialize Core AI Components
-dataset = generate_dataset()
+dataset = generate_dataset(PROJECT_ROOT)
 text_encoder = TransformerTextEncoder()
 image_encoder = ImageEncoder()
 fusion_engine = MultimodalFusionEngine()

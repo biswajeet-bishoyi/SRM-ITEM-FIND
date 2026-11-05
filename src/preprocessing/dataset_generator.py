@@ -158,9 +158,19 @@ SYNTHETIC_VARIATIONS_LIST = [
 
 def generate_dataset(base_dir: str = "."):
     """Generate and save structured dataset for SRM CampusFind."""
-    os.makedirs(os.path.join(base_dir, "data", "processed"), exist_ok=True)
-    os.makedirs(os.path.join(base_dir, "data", "synthetic"), exist_ok=True)
-    
+    dataset_file = os.path.join(base_dir, DATASET_PATH)
+    synthetic_file = os.path.join(base_dir, SYNTHETIC_PATH)
+
+    # If dataset already exists on disk, load and return it directly
+    if os.path.exists(dataset_file):
+        try:
+            with open(dataset_file, "r", encoding="utf-8") as f:
+                records = json.load(f)
+                if records and len(records) > 0:
+                    return records
+        except Exception:
+            pass
+
     records = []
     rec_counter = 100
     
@@ -203,16 +213,20 @@ def generate_dataset(base_dir: str = "."):
             "data_source": "REAL_CURATED"
         })
         
-    dataset_file = os.path.join(base_dir, DATASET_PATH)
-    with open(dataset_file, "w") as f:
-        json.dump(records, f, indent=2)
-        
-    synthetic_file = os.path.join(base_dir, SYNTHETIC_PATH)
-    with open(synthetic_file, "w") as f:
-        json.dump(SYNTHETIC_VARIATIONS_LIST, f, indent=2)
-        
-    print(f"[Dataset Generator] Created {len(records)} records in '{dataset_file}'")
-    print(f"[Dataset Generator] Created synthetic paraphrased variations in '{synthetic_file}'")
+    try:
+        os.makedirs(os.path.join(base_dir, "data", "processed"), exist_ok=True)
+        os.makedirs(os.path.join(base_dir, "data", "synthetic"), exist_ok=True)
+        with open(dataset_file, "w", encoding="utf-8") as f:
+            json.dump(records, f, indent=2)
+            
+        with open(synthetic_file, "w", encoding="utf-8") as f:
+            json.dump(SYNTHETIC_VARIATIONS_LIST, f, indent=2)
+            
+        print(f"[Dataset Generator] Created {len(records)} records in '{dataset_file}'")
+        print(f"[Dataset Generator] Created synthetic paraphrased variations in '{synthetic_file}'")
+    except OSError:
+        pass
+
     return records
 
 if __name__ == "__main__":
