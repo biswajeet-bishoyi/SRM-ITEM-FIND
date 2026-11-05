@@ -6,6 +6,7 @@ Provides baselines: Keyword Match, TF-IDF Cosine, and Transformer Embedding Cosi
 """
 
 import os
+import math
 import numpy as np
 import re
 from typing import List, Union
@@ -18,8 +19,65 @@ if not os.environ.get("VERCEL"):
     except Exception:
         HAS_SENTENCE_TRANSFORMERS = False
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+try:
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    HAS_SKLEARN = True
+except ImportError:
+    HAS_SKLEARN = False
+
+class SimpleTfidfVectorizer:
+    """Lightweight pure-NumPy TF-IDF vectorizer that does not require scipy/sklearn."""
+    def __init__(self, stop_words=None, ngram_range=(1, 2)):
+        self.stop_words = set(stop_words) if stop_words else set()
+        self.ngram_range = ngram_range
+        self.vocabulary = {}
+        self.idf = {}
+        self.is_fitted = False
+
+    def _tokenize(self, text: str) -> List[str]:
+        words = [w for w in re.findall(r'\b[a-zA-Z0-9_\-]+\b', text.lower()) if w not in self.stop_words]
+        tokens = list(words)
+        min_n, max_n = self.ngram_range
+        for n in range(min_n, max_n + 1):
+            if n > 1 and len(words) >= n:
+                for i in range(len(words) - n + 1):
+                    tokens.append(" ".join(words[i:i+n]))
+        return tokens
+
+    def fit(self, corpus: List[str]):
+        from collections import Counter
+        doc_count = max(1, len(corpus))
+        df = Counter()
+        vocab_set = set()
+        for doc in corpus:
+            tokens = set(self._tokenize(doc))
+            vocab_set.update(tokens)
+            for t in tokens:
+                df[t] += 1
+        self.vocabulary = {t: idx for idx, t in enumerate(sorted(vocab_set))}
+        self.idf = {t: float(math.log((1.0 + doc_count) / (1.0 + count)) + 1.0) for t, count in df.items()}
+        self.is_fitted = True
+        return self
+
+    def fit_transform(self, corpus: List[str]):
+        self.fit(corpus)
+        return self.transform(corpus)
+
+    def transform(self, corpus: List[str]):
+        from collections import Counter
+        dim = max(1, len(self.vocabulary))
+        matrix = np.zeros((len(corpus), dim), dtype=np.float32)
+        for row_idx, doc in enumerate(corpus):
+            tokens = self._tokenize(doc)
+            counts = Counter(tokens)
+            for t, cnt in counts.items():
+                if t in self.vocabulary:
+                    col_idx = self.vocabulary[t]
+                    matrix[row_idx, col_idx] = float(cnt) * self.idf.get(t, 1.0)
+            norm = np.linalg.norm(matrix[row_idx])
+            if norm > 0:
+                matrix[row_idx] /= norm
+        return matrix
 
 SYNONYM_CLUSTERS = [
     {"earbuds", "earphones", "airpods", "buds", "headset", "headphones", "earpiece"},
@@ -75,7 +133,10 @@ class TfidfBaselineMatcher:
     """Baseline 2: TF-IDF Vectorizer + Cosine Similarity."""
     
     def __init__(self):
-        self.vectorizer = TfidfVectorizer(stop_words='english')
+        if HAS_SKLEARN and not os.environ.get("VERCEL"):
+            self.vectorizer = TfidfVectorizer(stop_words='english')
+        else:
+            self.vectorizer = SimpleTfidfVectorizer()
         self.is_fitted = False
         
     def fit(self, corpus: List[str]):
@@ -85,12 +146,15 @@ class TfidfBaselineMatcher:
             
     def compute_similarity(self, text1: str, text2: str) -> float:
         if not self.is_fitted:
-            matrix = self.vectorizer.fit_transform([text1, text2])
-            return float(cosine_similarity(matrix[0], matrix[1])[0][0])
+            res = self.vectorizer.fit_transform([text1, text2])
+            matrix = res.toarray() if hasattr(res, "toarray") else res
+            return compute_cosine_similarity(matrix[0], matrix[1])
         else:
-            v1 = self.vectorizer.transform([text1])
-            v2 = self.vectorizer.transform([text2])
-            return float(cosine_similarity(v1, v2)[0][0])
+            r1 = self.vectorizer.transform([text1])
+            r2 = self.vectorizer.transform([text2])
+            v1 = r1.toarray() if hasattr(r1, "toarray") else r1
+            v2 = r2.toarray() if hasattr(r2, "toarray") else r2
+            return compute_cosine_similarity(v1[0], v2[0])
 
 
 class TransformerTextEncoder:
@@ -115,7 +179,10 @@ class TransformerTextEncoder:
         else:
             self.use_fallback = True
             
-        self.tfidf = TfidfVectorizer(ngram_range=(1, 3), analyzer='word')
+        if HAS_SKLEARN and not os.environ.get("VERCEL"):
+            self.tfidf = TfidfVectorizer(ngram_range=(1, 3), analyzer='word')
+        else:
+            self.tfidf = SimpleTfidfVectorizer(ngram_range=(1, 2))
         self.is_fitted = False
         
     def fit_fallback(self, corpus: List[str]):
@@ -145,9 +212,11 @@ class TransformerTextEncoder:
         else:
             expanded_inputs = [self._apply_synonym_expansion(t) for t in input_list]
             if not self.is_fitted:
-                matrix = self.tfidf.fit_transform(expanded_inputs).toarray()
+                res = self.tfidf.fit_transform(expanded_inputs)
             else:
-                matrix = self.tfidf.transform(expanded_inputs).toarray()
+                res = self.tfidf.transform(expanded_inputs)
+                
+            matrix = res.toarray() if hasattr(res, "toarray") else res
                 
             norms = np.linalg.norm(matrix, axis=1, keepdims=True)
             norms[norms == 0] = 1.0
