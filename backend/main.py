@@ -9,10 +9,9 @@ import sys
 import json
 import traceback
 from typing import Dict, Any, Optional, List
-from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from pydantic import BaseModel
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,6 +32,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    err = traceback.format_exc()
+    print(f"[GLOBAL UNHANDLED EXCEPTION]: {err}")
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Server Error", "detail": str(exc), "traceback": err}
+    )
 
 if os.environ.get("VERCEL"):
     UPLOADS_DIR = os.path.join("/tmp", "uploads")
@@ -197,6 +205,7 @@ class SearchMatchRequest(BaseModel):
 
 
 @app.get("/api/health")
+@app.get("/health")
 def health_check():
     init_app()
     if startup_error:
@@ -215,6 +224,7 @@ def health_check():
 
 
 @app.get("/api/dataset")
+@app.get("/dataset")
 def get_dataset():
     init_app()
     records = vector_db.records if vector_db else []
@@ -332,6 +342,7 @@ def check_for_cross_matches(new_record: Dict[str, Any], target_status: str, min_
 
 
 @app.post("/api/report/lost")
+@app.post("/report/lost")
 def report_lost_item(report: ReportItemRequest):
     init_app()
     try:
@@ -363,6 +374,7 @@ def report_lost_item(report: ReportItemRequest):
 
 
 @app.post("/api/report/found")
+@app.post("/report/found")
 def report_found_item(report: ReportItemRequest):
     init_app()
     try:
@@ -388,6 +400,7 @@ def report_found_item(report: ReportItemRequest):
 
 
 @app.post("/api/search/matches")
+@app.post("/search/matches")
 def search_matches(req: SearchMatchRequest):
     init_app()
     if startup_error:
@@ -468,28 +481,35 @@ def search_matches(req: SearchMatchRequest):
 
 
 @app.get("/api/notifications")
+@app.get("/notifications")
 def get_notifications():
-    return {"notifications": notification_manager.get_all_notifications()}
+    return {"notifications": notification_manager.get_all_notifications() if notification_manager else []}
 
 
 @app.post("/api/synthetic/generate")
+@app.post("/synthetic/generate")
 def generate_synthetic_samples(item: str, color: str, brand: str, location: str):
+    from src.genai.explanation_generator import GenAISyntheticDataGenerator
     variations = GenAISyntheticDataGenerator.generate_synthetic_samples(item, color, brand, location)
     return {"original": f"{color} {brand} {item} lost near {location}", "synthetic_paraphrases": variations}
 
 
-# Serve Frontend Web App and uploaded item photos
-frontend_dir = os.path.join(PROJECT_ROOT, "frontend")
-if os.path.exists(frontend_dir):
-    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+# Serve Frontend Web App and uploaded item photos (optional for local run)
+try:
+    from fastapi.staticfiles import StaticFiles
+    frontend_dir = os.path.join(PROJECT_ROOT, "frontend")
+    if os.path.exists(frontend_dir):
+        app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
 
-images_dir = os.path.join(PROJECT_ROOT, "data", "images")
-if os.path.exists(images_dir):
-    app.mount("/data/images", StaticFiles(directory=images_dir), name="images")
-    app.mount("/images", StaticFiles(directory=images_dir), name="images_alt")
+    images_dir = os.path.join(PROJECT_ROOT, "data", "images")
+    if os.path.exists(images_dir):
+        app.mount("/data/images", StaticFiles(directory=images_dir), name="images")
+        app.mount("/images", StaticFiles(directory=images_dir), name="images_alt")
 
-if os.path.exists(UPLOADS_DIR):
-    app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
+    if os.path.exists(UPLOADS_DIR):
+        app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
+except Exception as sfe:
+    print(f"[StaticFiles mounting note]: {sfe}")
 
 @app.get("/", response_class=HTMLResponse)
 def serve_index():
