@@ -12,13 +12,15 @@ import numpy as np
 from PIL import Image, ImageOps
 from typing import Optional, Union
 
-try:
-    import torch
-    import torchvision.transforms as transforms
-    import torchvision.models as models
-    HAS_TORCHVISION = True
-except ImportError:
-    HAS_TORCHVISION = False
+HAS_TORCHVISION = False
+if not os.environ.get("VERCEL"):
+    try:
+        import torch
+        import torchvision.transforms as transforms
+        import torchvision.models as models
+        HAS_TORCHVISION = True
+    except Exception:
+        HAS_TORCHVISION = False
 
 
 def compute_cosine_similarity(vec1: np.ndarray, vec2: np.ndarray) -> float:
@@ -44,7 +46,7 @@ class ImageEncoder:
         self.model = None
         self.transform = None
         
-        if HAS_TORCHVISION:
+        if HAS_TORCHVISION and not os.environ.get("VERCEL"):
             try:
                 # Initialize ResNet18 feature extractor (removing final classification fc layer)
                 base_model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
@@ -65,7 +67,7 @@ class ImageEncoder:
                 print(f"[ImageEncoder] Warning loading PyTorch model ({e}). Using Composite Visual Feature Extractor.")
                 self.use_fallback = True
         else:
-            print("[ImageEncoder] PyTorch/torchvision not detected. Using Composite Visual Feature Extractor.")
+            self.use_fallback = True
 
     def extract_composite_features(self, img: Image.Image) -> np.ndarray:
         """

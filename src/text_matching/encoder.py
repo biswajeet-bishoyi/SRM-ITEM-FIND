@@ -5,15 +5,18 @@ with fallback to Hybrid N-Gram TF-IDF + Synonym Context Mapper & Cosine Similari
 Provides baselines: Keyword Match, TF-IDF Cosine, and Transformer Embedding Cosine.
 """
 
+import os
 import numpy as np
 import re
 from typing import List, Union
 
-try:
-    from sentence_transformers import SentenceTransformer
-    HAS_SENTENCE_TRANSFORMERS = True
-except ImportError:
-    HAS_SENTENCE_TRANSFORMERS = False
+HAS_SENTENCE_TRANSFORMERS = False
+if not os.environ.get("VERCEL"):
+    try:
+        from sentence_transformers import SentenceTransformer
+        HAS_SENTENCE_TRANSFORMERS = True
+    except Exception:
+        HAS_SENTENCE_TRANSFORMERS = False
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -102,7 +105,7 @@ class TransformerTextEncoder:
         self.model = None
         self.use_fallback = not HAS_SENTENCE_TRANSFORMERS
         
-        if HAS_SENTENCE_TRANSFORMERS:
+        if HAS_SENTENCE_TRANSFORMERS and not os.environ.get("VERCEL"):
             try:
                 self.model = SentenceTransformer(model_name)
                 print(f"[TransformerTextEncoder] Loaded Transformer model '{model_name}'")
@@ -110,7 +113,7 @@ class TransformerTextEncoder:
                 print(f"[TransformerTextEncoder] Warning: ({e}). Using Hybrid Semantic fallback.")
                 self.use_fallback = True
         else:
-            print("[TransformerTextEncoder] sentence_transformers library not detected. Using Hybrid Semantic fallback.")
+            self.use_fallback = True
             
         self.tfidf = TfidfVectorizer(ngram_range=(1, 3), analyzer='word')
         self.is_fitted = False

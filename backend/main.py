@@ -63,13 +63,17 @@ notification_manager = NotificationManager(confidence_threshold=0.50)
 vector_db = VectorDatabase()
 
 # Populate Vector DB
-corpus = [r["description"] for r in dataset]
-text_encoder.fit_fallback(corpus)
+try:
+    corpus = [r["description"] for r in dataset]
+    text_encoder.fit_fallback(corpus)
 
-for item in dataset:
-    t_emb = text_encoder.encode(item["description"])
-    i_emb = image_encoder.encode(item["image_filename"])
-    vector_db.add_record(item, t_emb, i_emb)
+    for item in dataset:
+        t_emb = text_encoder.encode(item["description"])
+        i_emb = image_encoder.encode(item["image_filename"])
+        vector_db.add_record(item, t_emb, i_emb)
+except Exception as e:
+    import traceback
+    print(f"[Warning during Vector DB initialization]: {e}\n{traceback.format_exc()}")
 
 
 class ReportItemRequest(BaseModel):
@@ -100,7 +104,12 @@ class SearchMatchRequest(BaseModel):
 
 @app.get("/api/health")
 def health_check():
-    return {"status": "online", "system": "SRM CampusFind AI Backend", "dataset_size": len(vector_db.records)}
+    return {
+        "status": "online",
+        "system": "SRM CampusFind AI Backend",
+        "dataset_size": len(vector_db.records),
+        "environment": "vercel" if os.environ.get("VERCEL") else "local"
+    }
 
 
 @app.get("/api/dataset")
@@ -236,7 +245,9 @@ def generate_synthetic_samples(item: str, color: str, brand: str, location: str)
 frontend_dir = os.path.join(PROJECT_ROOT, "frontend")
 if os.path.exists(frontend_dir):
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
-app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
+
+if os.path.exists(UPLOADS_DIR):
+    app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
 @app.get("/", response_class=HTMLResponse)
 def serve_index():
