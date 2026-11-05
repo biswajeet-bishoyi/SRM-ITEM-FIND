@@ -16,17 +16,14 @@ except Exception as e:
 
     app = FastAPI(title="SRM CampusFind Diagnostic Fallback")
 
-    @app.get("/{full_path:path}")
+    @app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
     def error_handler(full_path: str):
-        return HTMLResponse(
-            content=f"""
-            <html>
-            <body style="font-family:sans-serif;background:#0f172a;color:#f87171;padding:40px;">
-                <h2>Vercel Startup Exception in backend.main</h2>
-                <pre style="background:#1e293b;padding:20px;border-radius:8px;overflow:auto;color:#cbd5e1;">{err}</pre>
-            </body>
-            </html>
-            """,
-            status_code=500
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "Backend Startup Failed",
+                "message": "An error occurred while loading SRM CampusFind components.",
+                "details": err
+            }
         )
 

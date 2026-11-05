@@ -5,6 +5,8 @@ Includes configurable feature weights, confidence threshold classification,
 and ablation study runner.
 """
 
+import os
+import json
 import math
 from datetime import datetime
 from typing import Dict, Any, Optional
@@ -92,8 +94,35 @@ class MultimodalFusionEngine:
     HIGH_CONFIDENCE_THRESHOLD = 0.50
     POSSIBLE_MATCH_THRESHOLD = 0.40
     
+    @staticmethod
+    def load_trained_weights() -> Optional[Dict[str, float]]:
+        """Load learned weights from models/fusion_model/learned_weights.json if trained."""
+        candidates = [
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "models", "fusion_model", "learned_weights.json"),
+            os.path.join("models", "fusion_model", "learned_weights.json")
+        ]
+        for p in candidates:
+            if os.path.exists(p):
+                try:
+                    with open(p, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        if "weights" in data:
+                            return data["weights"]
+                        elif "w_text" in data:
+                            return data
+                except Exception:
+                    pass
+        return None
+
     def __init__(self, weights: Dict[str, float] = None):
-        self.weights = weights if weights else dict(self.DEFAULT_WEIGHTS)
+        if weights:
+            self.weights = dict(weights)
+        else:
+            trained = self.load_trained_weights()
+            if trained:
+                self.weights = dict(trained)
+            else:
+                self.weights = dict(self.DEFAULT_WEIGHTS)
         self.normalize_weights()
         
     def normalize_weights(self):

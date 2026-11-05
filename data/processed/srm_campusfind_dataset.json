@@ -286,5 +286,1517 @@
     "timestamp": "2026-10-05T20:15:00",
     "image_filename": "honda_keys.jpg",
     "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_108",
+    "status": "LOST",
+    "pair_id": "PAIR_009",
+    "match_target_id": "FOUND_108",
+    "description": "Misplaced white AirPods Pro with a clear silicone protective case at TP Ganesan Auditorium.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "white",
+    "location_name": "TP Ganesan Auditorium Main Hall",
+    "coordinates": [
+      12.8228,
+      80.041
+    ],
+    "timestamp": "2026-10-06T11:00:00",
+    "image_filename": "airpods_pro.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_108",
+    "status": "FOUND",
+    "pair_id": "PAIR_009",
+    "match_target_id": "LOST_108",
+    "description": "Discovered Apple wireless earphones inside a transparent case near auditorium entrance.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "white",
+    "location_name": "TP Ganesan Auditorium Entrance Stairs",
+    "coordinates": [
+      12.8229,
+      80.0411
+    ],
+    "timestamp": "2026-10-06T12:30:00",
+    "image_filename": "airpods_pro.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_109",
+    "status": "LOST",
+    "pair_id": "PAIR_010",
+    "match_target_id": "FOUND_109",
+    "description": "Lost my black OnePlus Nord Buds case inside University Building central elevator.",
+    "category": "electronics",
+    "brand": "OnePlus",
+    "color": "black",
+    "location_name": "University Building Central Lift",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-06T14:20:00",
+    "image_filename": "oneplus_buds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_109",
+    "status": "FOUND",
+    "pair_id": "PAIR_010",
+    "match_target_id": "LOST_109",
+    "description": "Found a matte black OnePlus earphone charging case near UB ground elevator door.",
+    "category": "electronics",
+    "brand": "OnePlus",
+    "color": "black",
+    "location_name": "UB Ground Floor Elevator Lobby",
+    "coordinates": [
+      12.8221,
+      80.0431
+    ],
+    "timestamp": "2026-10-06T15:00:00",
+    "image_filename": "oneplus_buds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_110",
+    "status": "LOST",
+    "pair_id": "PAIR_011",
+    "match_target_id": "FOUND_110",
+    "description": "Left silver Sony WH-1000XM4 over-ear headphones on study carrel in Central Library 1st floor.",
+    "category": "electronics",
+    "brand": "Sony",
+    "color": "silver",
+    "location_name": "Central Library 1st Floor Study Carrel",
+    "coordinates": [
+      12.8231,
+      80.0442
+    ],
+    "timestamp": "2026-10-07T16:00:00",
+    "image_filename": "sony_headphones.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_110",
+    "status": "FOUND",
+    "pair_id": "PAIR_011",
+    "match_target_id": "LOST_110",
+    "description": "Found large silver-grey Sony noise-canceling headphones in the library reading room.",
+    "category": "electronics",
+    "brand": "Sony",
+    "color": "silver",
+    "location_name": "Central Library Reading Hall A",
+    "coordinates": [
+      12.8232,
+      80.0443
+    ],
+    "timestamp": "2026-10-07T17:15:00",
+    "image_filename": "sony_headphones.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_111",
+    "status": "LOST",
+    "pair_id": "PAIR_012",
+    "match_target_id": "FOUND_111",
+    "description": "Misplaced a Noise ColorFit smart watch with rose gold dial and pink strap at Kaveri hostel gym.",
+    "category": "electronics",
+    "brand": "Noise",
+    "color": "rose gold",
+    "location_name": "Kaveri Hostel Gym",
+    "coordinates": [
+      12.827,
+      80.048
+    ],
+    "timestamp": "2026-10-07T07:30:00",
+    "image_filename": "noise_watch.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_111",
+    "status": "FOUND",
+    "pair_id": "PAIR_012",
+    "match_target_id": "LOST_111",
+    "description": "Found a ladies smartwatch with metallic rose gold case and pink rubber band near treadmill.",
+    "category": "electronics",
+    "brand": "Noise",
+    "color": "rose gold",
+    "location_name": "Kaveri Hostel Fitness Room",
+    "coordinates": [
+      12.8271,
+      80.0481
+    ],
+    "timestamp": "2026-10-07T08:45:00",
+    "image_filename": "noise_watch.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_112",
+    "status": "LOST",
+    "pair_id": "PAIR_013",
+    "match_target_id": "FOUND_112",
+    "description": "Lost blue JBL Wave earbuds in pocket charging case while walking down BioTech corridor.",
+    "category": "electronics",
+    "brand": "JBL",
+    "color": "blue",
+    "location_name": "BioTech Block 2nd Floor Corridor",
+    "coordinates": [
+      12.8238,
+      80.046
+    ],
+    "timestamp": "2026-10-08T10:15:00",
+    "image_filename": "jbl_earbuds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_112",
+    "status": "FOUND",
+    "pair_id": "PAIR_013",
+    "match_target_id": "LOST_112",
+    "description": "Picked up a small blue JBL Bluetooth earphone pod box in BioTech block ground passage.",
+    "category": "electronics",
+    "brand": "JBL",
+    "color": "blue",
+    "location_name": "BioTech Block Ground Passage",
+    "coordinates": [
+      12.8239,
+      80.0462
+    ],
+    "timestamp": "2026-10-08T11:00:00",
+    "image_filename": "jbl_earbuds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_113",
+    "status": "LOST",
+    "pair_id": "PAIR_014",
+    "match_target_id": "FOUND_113",
+    "description": "Dropped black Fastrack smart band watch on Sports Complex outdoor badminton court.",
+    "category": "electronics",
+    "brand": "Fastrack",
+    "color": "black",
+    "location_name": "Sports Complex Badminton Court",
+    "coordinates": [
+      12.826,
+      80.047
+    ],
+    "timestamp": "2026-10-08T18:00:00",
+    "image_filename": "fastrack_band.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_113",
+    "status": "FOUND",
+    "pair_id": "PAIR_014",
+    "match_target_id": "LOST_113",
+    "description": "Found a black Fastrack fitness tracker band on the sports complex court boundary.",
+    "category": "electronics",
+    "brand": "Fastrack",
+    "color": "black",
+    "location_name": "Sports Complex Court Boundary",
+    "coordinates": [
+      12.8262,
+      80.0472
+    ],
+    "timestamp": "2026-10-08T19:20:00",
+    "image_filename": "fastrack_band.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_114",
+    "status": "LOST",
+    "pair_id": "PAIR_015",
+    "match_target_id": "FOUND_114",
+    "description": "Lost white Realme Buds Air wireless pods at Clock Tower campus bus stop waiting bench.",
+    "category": "electronics",
+    "brand": "Realme",
+    "color": "white",
+    "location_name": "Clock Tower Campus Bus Stop",
+    "coordinates": [
+      12.82,
+      80.045
+    ],
+    "timestamp": "2026-10-09T08:30:00",
+    "image_filename": "realme_buds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_114",
+    "status": "FOUND",
+    "pair_id": "PAIR_015",
+    "match_target_id": "LOST_114",
+    "description": "Found pebble-shaped white Realme earbud charging case on bench near Clock Tower.",
+    "category": "electronics",
+    "brand": "Realme",
+    "color": "white",
+    "location_name": "Clock Tower Main Gate Bench",
+    "coordinates": [
+      12.8202,
+      80.0451
+    ],
+    "timestamp": "2026-10-09T09:10:00",
+    "image_filename": "realme_buds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_115",
+    "status": "LOST",
+    "pair_id": "PAIR_016",
+    "match_target_id": "FOUND_115",
+    "description": "Lost dark blue Midnight Apple MacBook Air M2 laptop in dark grey felt sleeve in library.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "dark blue",
+    "location_name": "Central Library 3rd Floor Digital Lab",
+    "coordinates": [
+      12.8231,
+      80.0442
+    ],
+    "timestamp": "2026-10-09T14:00:00",
+    "image_filename": "macbook_air.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_115",
+    "status": "FOUND",
+    "pair_id": "PAIR_016",
+    "match_target_id": "LOST_115",
+    "description": "Found an Apple MacBook Air inside a grey felt sleeve on Central Library 3rd floor desk.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "dark blue",
+    "location_name": "Central Library 3rd Floor Quiet Zone",
+    "coordinates": [
+      12.8232,
+      80.0444
+    ],
+    "timestamp": "2026-10-09T15:30:00",
+    "image_filename": "macbook_air.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_116",
+    "status": "LOST",
+    "pair_id": "PAIR_017",
+    "match_target_id": "FOUND_116",
+    "description": "Left my black HP Pavilion gaming laptop with green keyboard letters at Tech Park 4th floor.",
+    "category": "electronics",
+    "brand": "HP",
+    "color": "black",
+    "location_name": "Tech Park 4th Floor Lab 404",
+    "coordinates": [
+      12.8246,
+      80.0456
+    ],
+    "timestamp": "2026-10-09T16:30:00",
+    "image_filename": "hp_pavilion.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_116",
+    "status": "FOUND",
+    "pair_id": "PAIR_017",
+    "match_target_id": "LOST_116",
+    "description": "Found a black HP gaming notebook with green backlit keys in Tech Park Lab 404.",
+    "category": "electronics",
+    "brand": "HP",
+    "color": "black",
+    "location_name": "Tech Park Lab 404 Desk 15",
+    "coordinates": [
+      12.8246,
+      80.0456
+    ],
+    "timestamp": "2026-10-09T17:45:00",
+    "image_filename": "hp_pavilion.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_117",
+    "status": "LOST",
+    "pair_id": "PAIR_018",
+    "match_target_id": "FOUND_117",
+    "description": "Misplaced a grey Lenovo IdeaPad Slim 3 laptop in UB 5th floor seminar room.",
+    "category": "electronics",
+    "brand": "Lenovo",
+    "color": "platinum grey",
+    "location_name": "UB 5th Floor Seminar Hall 501",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-10T11:45:00",
+    "image_filename": "lenovo_ideapad.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_117",
+    "status": "FOUND",
+    "pair_id": "PAIR_018",
+    "match_target_id": "LOST_117",
+    "description": "Found a slim grey Lenovo laptop on the podium desk of University Building hall 501.",
+    "category": "electronics",
+    "brand": "Lenovo",
+    "color": "platinum grey",
+    "location_name": "UB 5th Floor Hall 501 Podium",
+    "coordinates": [
+      12.8221,
+      80.0431
+    ],
+    "timestamp": "2026-10-10T13:00:00",
+    "image_filename": "lenovo_ideapad.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_118",
+    "status": "LOST",
+    "pair_id": "PAIR_019",
+    "match_target_id": "FOUND_118",
+    "description": "Lost an Apple iPad 9th Generation tablet with black magnetic flip cover in Architecture studio.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "space grey",
+    "location_name": "Architecture Block Drawing Studio 2",
+    "coordinates": [
+      12.8251,
+      80.0421
+    ],
+    "timestamp": "2026-10-10T14:15:00",
+    "image_filename": "ipad_tablet.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_118",
+    "status": "FOUND",
+    "pair_id": "PAIR_019",
+    "match_target_id": "LOST_118",
+    "description": "Found an Apple iPad inside a dark folding magnetic folio cover in Architecture drafting room.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "space grey",
+    "location_name": "Architecture Studio 2 Drafting Table",
+    "coordinates": [
+      12.8252,
+      80.0422
+    ],
+    "timestamp": "2026-10-10T15:30:00",
+    "image_filename": "ipad_tablet.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_119",
+    "status": "LOST",
+    "pair_id": "PAIR_020",
+    "match_target_id": "FOUND_119",
+    "description": "Misplaced Samsung Galaxy S23 smartphone in transparent back cover on table at Java Canteen.",
+    "category": "electronics",
+    "brand": "Samsung",
+    "color": "black",
+    "location_name": "Tech Park Java Canteen Table 12",
+    "coordinates": [
+      12.8245,
+      80.0455
+    ],
+    "timestamp": "2026-10-11T13:10:00",
+    "image_filename": "samsung_s23.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_119",
+    "status": "FOUND",
+    "pair_id": "PAIR_020",
+    "match_target_id": "LOST_119",
+    "description": "Found a black Samsung flagship Android phone with clear cover on Java Canteen corner table.",
+    "category": "electronics",
+    "brand": "Samsung",
+    "color": "black",
+    "location_name": "Java Canteen Lawn Table",
+    "coordinates": [
+      12.8247,
+      80.0457
+    ],
+    "timestamp": "2026-10-11T13:40:00",
+    "image_filename": "samsung_s23.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_120",
+    "status": "LOST",
+    "pair_id": "PAIR_021",
+    "match_target_id": "FOUND_120",
+    "description": "Dropped white iPhone 14 with cracked glass protector on Open Air Theatre amphitheatre steps.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "white",
+    "location_name": "Open Air Theatre Steps",
+    "coordinates": [
+      12.824,
+      80.0435
+    ],
+    "timestamp": "2026-10-11T19:30:00",
+    "image_filename": "iphone_14.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_120",
+    "status": "FOUND",
+    "pair_id": "PAIR_021",
+    "match_target_id": "LOST_120",
+    "description": "Found an Apple iPhone in white with damaged screen film sitting on concrete OAT step.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "white",
+    "location_name": "OAT Amphitheatre Central Row",
+    "coordinates": [
+      12.8241,
+      80.0436
+    ],
+    "timestamp": "2026-10-11T20:20:00",
+    "image_filename": "iphone_14.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_121",
+    "status": "LOST",
+    "pair_id": "PAIR_022",
+    "match_target_id": "FOUND_121",
+    "description": "Lost silver OnePlus 11R phone with carbon fiber textured bumper case near MTP juice counter.",
+    "category": "electronics",
+    "brand": "OnePlus",
+    "color": "silver",
+    "location_name": "MTP Canteen Juice Corner",
+    "coordinates": [
+      12.821,
+      80.0415
+    ],
+    "timestamp": "2026-10-12T12:00:00",
+    "image_filename": "oneplus_11r.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_121",
+    "status": "FOUND",
+    "pair_id": "PAIR_022",
+    "match_target_id": "LOST_121",
+    "description": "Found a silver OnePlus Android mobile in dark carbon pattern case on MTP canteen shelf.",
+    "category": "electronics",
+    "brand": "OnePlus",
+    "color": "silver",
+    "location_name": "MTP Canteen Self Service Counter",
+    "coordinates": [
+      12.8211,
+      80.0416
+    ],
+    "timestamp": "2026-10-12T12:45:00",
+    "image_filename": "oneplus_11r.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_122",
+    "status": "LOST",
+    "pair_id": "PAIR_023",
+    "match_target_id": "FOUND_122",
+    "description": "Misplaced blue Redmi Note 12 mobile phone with anime sticker on back in Estates admin block.",
+    "category": "electronics",
+    "brand": "Redmi",
+    "color": "blue",
+    "location_name": "Estates Block Admin Desk",
+    "coordinates": [
+      12.8202,
+      80.0448
+    ],
+    "timestamp": "2026-10-12T15:30:00",
+    "image_filename": "redmi_note.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_122",
+    "status": "FOUND",
+    "pair_id": "PAIR_023",
+    "match_target_id": "LOST_122",
+    "description": "Found a light blue Xiaomi Redmi smartphone with cartoon sticker at Estates office lobby.",
+    "category": "electronics",
+    "brand": "Redmi",
+    "color": "blue",
+    "location_name": "Estates Block Lobby Waiting Area",
+    "coordinates": [
+      12.8203,
+      80.0449
+    ],
+    "timestamp": "2026-10-12T16:15:00",
+    "image_filename": "redmi_note.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_123",
+    "status": "LOST",
+    "pair_id": "PAIR_024",
+    "match_target_id": "FOUND_123",
+    "description": "Lost transparent back Nothing Phone (1) with glowing LED lights at UB food court.",
+    "category": "electronics",
+    "brand": "Nothing",
+    "color": "white",
+    "location_name": "UB Food Court 1st Floor",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-13T13:40:00",
+    "image_filename": "nothing_phone.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_123",
+    "status": "FOUND",
+    "pair_id": "PAIR_024",
+    "match_target_id": "LOST_123",
+    "description": "Found unique transparent glass Nothing Phone 1 left on table at University Building cafeteria.",
+    "category": "electronics",
+    "brand": "Nothing",
+    "color": "white",
+    "location_name": "UB Cafeteria Table 4",
+    "coordinates": [
+      12.8222,
+      80.0432
+    ],
+    "timestamp": "2026-10-13T14:30:00",
+    "image_filename": "nothing_phone.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_124",
+    "status": "LOST",
+    "pair_id": "PAIR_025",
+    "match_target_id": "FOUND_124",
+    "description": "Left black Mi 20000mAh heavy powerbank with dual fast charging ports at Java Canteen.",
+    "category": "electronics",
+    "brand": "Mi",
+    "color": "black",
+    "location_name": "Tech Park Java Canteen Plug Point",
+    "coordinates": [
+      12.8245,
+      80.0455
+    ],
+    "timestamp": "2026-10-13T16:00:00",
+    "image_filename": "mi_powerbank.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_124",
+    "status": "FOUND",
+    "pair_id": "PAIR_025",
+    "match_target_id": "LOST_124",
+    "description": "Found a matte black Xiaomi powerbank battery pack plugged into wall near Java Canteen.",
+    "category": "electronics",
+    "brand": "Mi",
+    "color": "black",
+    "location_name": "Java Canteen Wall Socket Area",
+    "coordinates": [
+      12.8246,
+      80.0457
+    ],
+    "timestamp": "2026-10-13T17:10:00",
+    "image_filename": "mi_powerbank.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_125",
+    "status": "LOST",
+    "pair_id": "PAIR_026",
+    "match_target_id": "FOUND_125",
+    "description": "Lost white Anker 65W GaN fast charger with thick braided Type-C cable at Central Library.",
+    "category": "electronics",
+    "brand": "Anker",
+    "color": "white",
+    "location_name": "Central Library Charging Kiosk",
+    "coordinates": [
+      12.8231,
+      80.0442
+    ],
+    "timestamp": "2026-10-14T11:20:00",
+    "image_filename": "anker_charger.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_125",
+    "status": "FOUND",
+    "pair_id": "PAIR_026",
+    "match_target_id": "LOST_125",
+    "description": "Found a white multi-port Anker laptop charger adapter with braided cord at library desk.",
+    "category": "electronics",
+    "brand": "Anker",
+    "color": "white",
+    "location_name": "Central Library Study Table 18",
+    "coordinates": [
+      12.8233,
+      80.0443
+    ],
+    "timestamp": "2026-10-14T12:15:00",
+    "image_filename": "anker_charger.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_126",
+    "status": "LOST",
+    "pair_id": "PAIR_027",
+    "match_target_id": "FOUND_126",
+    "description": "Lost metallic silver SanDisk 64GB dual OTG pendrive in Mechanical Block CAD workstation.",
+    "category": "electronics",
+    "brand": "SanDisk",
+    "color": "silver",
+    "location_name": "Mechanical Block CAD Lab Room 204",
+    "coordinates": [
+      12.8255,
+      80.0445
+    ],
+    "timestamp": "2026-10-14T15:00:00",
+    "image_filename": "sandisk_usb.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_126",
+    "status": "FOUND",
+    "pair_id": "PAIR_027",
+    "match_target_id": "LOST_126",
+    "description": "Found a silver swivel USB drive by SanDisk in Mechanical department computer lab.",
+    "category": "electronics",
+    "brand": "SanDisk",
+    "color": "silver",
+    "location_name": "Mechanical Computer Lab Workstation 9",
+    "coordinates": [
+      12.8256,
+      80.0446
+    ],
+    "timestamp": "2026-10-14T16:00:00",
+    "image_filename": "sandisk_usb.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_127",
+    "status": "LOST",
+    "pair_id": "PAIR_028",
+    "match_target_id": "FOUND_127",
+    "description": "Misplaced graphite black Logitech MX Master 3S wireless mouse on Tech Park 7th floor.",
+    "category": "electronics",
+    "brand": "Logitech",
+    "color": "black",
+    "location_name": "Tech Park 7th Floor Seminar Room",
+    "coordinates": [
+      12.8246,
+      80.0456
+    ],
+    "timestamp": "2026-10-15T10:45:00",
+    "image_filename": "logitech_mouse.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_127",
+    "status": "FOUND",
+    "pair_id": "PAIR_028",
+    "match_target_id": "LOST_127",
+    "description": "Found an ergonomic black Logitech Bluetooth mouse left in Tech Park meeting room.",
+    "category": "electronics",
+    "brand": "Logitech",
+    "color": "black",
+    "location_name": "Tech Park 7th Floor Conference Table",
+    "coordinates": [
+      12.8247,
+      80.0457
+    ],
+    "timestamp": "2026-10-15T11:45:00",
+    "image_filename": "logitech_mouse.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_128",
+    "status": "LOST",
+    "pair_id": "PAIR_029",
+    "match_target_id": "FOUND_128",
+    "description": "Left grey aluminum Portronics USB-C multiport hub dongle in UB 3rd floor CSE computer lab.",
+    "category": "electronics",
+    "brand": "Portronics",
+    "color": "grey",
+    "location_name": "UB 3rd Floor CSE Lab 302",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-15T14:30:00",
+    "image_filename": "usb_hub.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_128",
+    "status": "FOUND",
+    "pair_id": "PAIR_029",
+    "match_target_id": "LOST_128",
+    "description": "Found a metallic Type-C dongle adapter hub with HDMI port in UB Lab 302.",
+    "category": "electronics",
+    "brand": "Portronics",
+    "color": "grey",
+    "location_name": "UB Lab 302 Desk 4",
+    "coordinates": [
+      12.8221,
+      80.0431
+    ],
+    "timestamp": "2026-10-15T15:20:00",
+    "image_filename": "usb_hub.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_129",
+    "status": "LOST",
+    "pair_id": "PAIR_030",
+    "match_target_id": "FOUND_129",
+    "description": "Lost white square Apple 20W USB-C iPhone power adapter brick in Girls Hostel common room.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "white",
+    "location_name": "Girls Hostel Common Study Room",
+    "coordinates": [
+      12.827,
+      80.048
+    ],
+    "timestamp": "2026-10-16T09:00:00",
+    "image_filename": "apple_adapter.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_129",
+    "status": "FOUND",
+    "pair_id": "PAIR_030",
+    "match_target_id": "LOST_129",
+    "description": "Found genuine Apple 20W iPhone wall charging plug in Kaveri hostel ground floor hall.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "white",
+    "location_name": "Kaveri Hostel Ground Floor Hall",
+    "coordinates": [
+      12.8272,
+      80.0482
+    ],
+    "timestamp": "2026-10-16T10:00:00",
+    "image_filename": "apple_adapter.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_130",
+    "status": "LOST",
+    "pair_id": "PAIR_031",
+    "match_target_id": "FOUND_130",
+    "description": "Misplaced black Wildcraft heavy cargo backpack with red branding near Sports Complex bleachers.",
+    "category": "bags",
+    "brand": "Wildcraft",
+    "color": "black",
+    "location_name": "Sports Complex Stadium Bleachers",
+    "coordinates": [
+      12.826,
+      80.047
+    ],
+    "timestamp": "2026-10-16T17:15:00",
+    "image_filename": "wildcraft_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_130",
+    "status": "FOUND",
+    "pair_id": "PAIR_031",
+    "match_target_id": "LOST_130",
+    "description": "Found a black and red Wildcraft school/college backpack on outdoor sports bleachers.",
+    "category": "bags",
+    "brand": "Wildcraft",
+    "color": "black",
+    "location_name": "Sports Complex Ground Pavilion",
+    "coordinates": [
+      12.8261,
+      80.0472
+    ],
+    "timestamp": "2026-10-16T18:30:00",
+    "image_filename": "wildcraft_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_131",
+    "status": "LOST",
+    "pair_id": "PAIR_032",
+    "match_target_id": "FOUND_131",
+    "description": "Lost navy blue American Tourister laptop bag with neon yellow zipper pullers at Library.",
+    "category": "bags",
+    "brand": "American Tourister",
+    "color": "navy blue",
+    "location_name": "Central Library Baggage Counter",
+    "coordinates": [
+      12.8231,
+      80.0442
+    ],
+    "timestamp": "2026-10-17T11:00:00",
+    "image_filename": "tourister_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_131",
+    "status": "FOUND",
+    "pair_id": "PAIR_032",
+    "match_target_id": "LOST_131",
+    "description": "Found a dark blue American Tourister backpack with yellow tags at Central Library baggage shelf.",
+    "category": "bags",
+    "brand": "American Tourister",
+    "color": "navy blue",
+    "location_name": "Central Library Locker Row B",
+    "coordinates": [
+      12.8233,
+      80.0443
+    ],
+    "timestamp": "2026-10-17T12:10:00",
+    "image_filename": "tourister_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_132",
+    "status": "LOST",
+    "pair_id": "PAIR_033",
+    "match_target_id": "FOUND_132",
+    "description": "Left grey Puma sports daypack with white big cat logo at Architecture model-making workshop.",
+    "category": "bags",
+    "brand": "Puma",
+    "color": "grey",
+    "location_name": "Architecture Block Model Workshop",
+    "coordinates": [
+      12.8251,
+      80.0421
+    ],
+    "timestamp": "2026-10-17T15:30:00",
+    "image_filename": "puma_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_132",
+    "status": "FOUND",
+    "pair_id": "PAIR_033",
+    "match_target_id": "LOST_132",
+    "description": "Found a grey Puma backpack sitting on carpenter table in Architecture workshop.",
+    "category": "bags",
+    "brand": "Puma",
+    "color": "grey",
+    "location_name": "Architecture Workshop Room 102",
+    "coordinates": [
+      12.8252,
+      80.0423
+    ],
+    "timestamp": "2026-10-17T16:45:00",
+    "image_filename": "puma_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_133",
+    "status": "LOST",
+    "pair_id": "PAIR_034",
+    "match_target_id": "FOUND_133",
+    "description": "Lost dark brown leather Fastrack bi-fold wallet containing student ID and ICICI debit card at MTP.",
+    "category": "bags",
+    "brand": "Fastrack",
+    "color": "brown",
+    "location_name": "MTP Canteen Outer Seating",
+    "coordinates": [
+      12.821,
+      80.0415
+    ],
+    "timestamp": "2026-10-18T13:00:00",
+    "image_filename": "brown_wallet.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_133",
+    "status": "FOUND",
+    "pair_id": "PAIR_034",
+    "match_target_id": "LOST_133",
+    "description": "Found a brown men's leather wallet with bank cards and SRM ID on MTP canteen bench.",
+    "category": "bags",
+    "brand": "Fastrack",
+    "color": "brown",
+    "location_name": "MTP Canteen Bench 5",
+    "coordinates": [
+      12.8212,
+      80.0417
+    ],
+    "timestamp": "2026-10-18T13:40:00",
+    "image_filename": "brown_wallet.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_134",
+    "status": "LOST",
+    "pair_id": "PAIR_035",
+    "match_target_id": "FOUND_134",
+    "description": "Misplaced black leather Tommy Hilfiger wallet with red/white flag logo at Java Canteen pay desk.",
+    "category": "bags",
+    "brand": "Tommy Hilfiger",
+    "color": "black",
+    "location_name": "Tech Park Java Canteen Billing Counter",
+    "coordinates": [
+      12.8245,
+      80.0455
+    ],
+    "timestamp": "2026-10-18T14:15:00",
+    "image_filename": "tommy_wallet.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_134",
+    "status": "FOUND",
+    "pair_id": "PAIR_035",
+    "match_target_id": "LOST_134",
+    "description": "Found a branded black designer wallet near the billing counter at Tech Park Java Canteen.",
+    "category": "bags",
+    "brand": "Tommy Hilfiger",
+    "color": "black",
+    "location_name": "Java Canteen Cash Desk",
+    "coordinates": [
+      12.8246,
+      80.0456
+    ],
+    "timestamp": "2026-10-18T14:50:00",
+    "image_filename": "tommy_wallet.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_135",
+    "status": "LOST",
+    "pair_id": "PAIR_036",
+    "match_target_id": "FOUND_135",
+    "description": "Left tan brown Baggit ladies shoulder handbag with gold chain strap in UB reception lobby.",
+    "category": "bags",
+    "brand": "Baggit",
+    "color": "tan",
+    "location_name": "UB Ground Floor Reception Sofa",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-19T10:30:00",
+    "image_filename": "baggit_purse.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_135",
+    "status": "FOUND",
+    "pair_id": "PAIR_036",
+    "match_target_id": "LOST_135",
+    "description": "Found a tan women's tote purse with golden metallic buckle in University Building entrance.",
+    "category": "bags",
+    "brand": "Baggit",
+    "color": "tan",
+    "location_name": "UB Main Entrance Lobby Desk",
+    "coordinates": [
+      12.8221,
+      80.0432
+    ],
+    "timestamp": "2026-10-19T11:20:00",
+    "image_filename": "baggit_purse.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_136",
+    "status": "LOST",
+    "pair_id": "PAIR_037",
+    "match_target_id": "FOUND_136",
+    "description": "Lost khaki green Decathlon Quechua 20L backpack near Clock Tower auto rickshaw stand.",
+    "category": "bags",
+    "brand": "Quechua",
+    "color": "green",
+    "location_name": "Clock Tower Auto Stand",
+    "coordinates": [
+      12.82,
+      80.045
+    ],
+    "timestamp": "2026-10-19T16:00:00",
+    "image_filename": "quechua_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_136",
+    "status": "FOUND",
+    "pair_id": "PAIR_037",
+    "match_target_id": "LOST_136",
+    "description": "Found an olive green Quechua lightweight rucksack near main campus gate bus shelter.",
+    "category": "bags",
+    "brand": "Quechua",
+    "color": "green",
+    "location_name": "Main Gate Bus Shelter",
+    "coordinates": [
+      12.8203,
+      80.0452
+    ],
+    "timestamp": "2026-10-19T17:10:00",
+    "image_filename": "quechua_bag.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_137",
+    "status": "LOST",
+    "pair_id": "PAIR_038",
+    "match_target_id": "FOUND_137",
+    "description": "Dropped red Nivia cylindrical gym duffel bag with running shoes inside at Sports Complex.",
+    "category": "bags",
+    "brand": "Nivia",
+    "color": "red",
+    "location_name": "Sports Complex Locker Entrance",
+    "coordinates": [
+      12.826,
+      80.047
+    ],
+    "timestamp": "2026-10-20T08:00:00",
+    "image_filename": "nivia_duffel.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_137",
+    "status": "FOUND",
+    "pair_id": "PAIR_038",
+    "match_target_id": "LOST_137",
+    "description": "Found a red sports kitbag with sneakers inside near Sports Complex changing rooms.",
+    "category": "bags",
+    "brand": "Nivia",
+    "color": "red",
+    "location_name": "Sports Complex Changing Room Corridor",
+    "coordinates": [
+      12.8262,
+      80.0471
+    ],
+    "timestamp": "2026-10-20T09:15:00",
+    "image_filename": "nivia_duffel.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_138",
+    "status": "LOST",
+    "pair_id": "PAIR_039",
+    "match_target_id": "FOUND_138",
+    "description": "Lost SRM B.Tech Mechanical ID card on bright red lanyard in Automobile Workshop.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "red & white",
+    "location_name": "Mechanical Automobile Workshop",
+    "coordinates": [
+      12.8255,
+      80.0445
+    ],
+    "timestamp": "2026-10-20T11:30:00",
+    "image_filename": "mech_id_card.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_138",
+    "status": "FOUND",
+    "pair_id": "PAIR_039",
+    "match_target_id": "LOST_138",
+    "description": "Found an engineering student ID badge with red neck ribbon in workshop machine bay.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "red & white",
+    "location_name": "Automobile Lab Bay 2",
+    "coordinates": [
+      12.8257,
+      80.0447
+    ],
+    "timestamp": "2026-10-20T12:45:00",
+    "image_filename": "mech_id_card.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_139",
+    "status": "LOST",
+    "pair_id": "PAIR_040",
+    "match_target_id": "FOUND_139",
+    "description": "Misplaced SRM Biotechnology student ID card with green lanyard near BioTech central staircase.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "green & white",
+    "location_name": "BioTech Block Central Stairs",
+    "coordinates": [
+      12.8238,
+      80.046
+    ],
+    "timestamp": "2026-10-21T10:00:00",
+    "image_filename": "biotech_id_card.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_139",
+    "status": "FOUND",
+    "pair_id": "PAIR_040",
+    "match_target_id": "LOST_139",
+    "description": "Found a student smart card with green ribbon near ground floor stairs of BioTech department.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "green & white",
+    "location_name": "BioTech Ground Floor Notice Board",
+    "coordinates": [
+      12.8239,
+      80.0461
+    ],
+    "timestamp": "2026-10-21T10:50:00",
+    "image_filename": "biotech_id_card.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_140",
+    "status": "LOST",
+    "pair_id": "PAIR_041",
+    "match_target_id": "FOUND_140",
+    "description": "Lost semester examination hall ticket and fee receipt inside transparent folder on UB 2nd floor.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "white",
+    "location_name": "UB 2nd Floor Exam Cell",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-21T14:15:00",
+    "image_filename": "exam_hall_ticket.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_140",
+    "status": "FOUND",
+    "pair_id": "PAIR_041",
+    "match_target_id": "LOST_140",
+    "description": "Found a plastic document sleeve with SRM exam admit card in University Building 2nd floor wing.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "white",
+    "location_name": "UB 2nd Floor Hallway Bench",
+    "coordinates": [
+      12.8222,
+      80.0431
+    ],
+    "timestamp": "2026-10-21T15:00:00",
+    "image_filename": "exam_hall_ticket.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_141",
+    "status": "LOST",
+    "pair_id": "PAIR_042",
+    "match_target_id": "FOUND_141",
+    "description": "Left black plastic cylindrical drawing sheet roller container in Architecture Department corridor.",
+    "category": "documents",
+    "brand": "Architecture Dept",
+    "color": "black",
+    "location_name": "Architecture Block 2nd Floor Corridor",
+    "coordinates": [
+      12.8251,
+      80.0421
+    ],
+    "timestamp": "2026-10-22T12:00:00",
+    "image_filename": "sheet_tube.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_141",
+    "status": "FOUND",
+    "pair_id": "PAIR_042",
+    "match_target_id": "LOST_141",
+    "description": "Found an expandable black drawing tube container for engineering sheets on 2nd floor corridor.",
+    "category": "documents",
+    "brand": "Architecture Dept",
+    "color": "black",
+    "location_name": "Architecture 2nd Floor Faculty Lounge",
+    "coordinates": [
+      12.8253,
+      80.0423
+    ],
+    "timestamp": "2026-10-22T13:10:00",
+    "image_filename": "sheet_tube.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_142",
+    "status": "LOST",
+    "pair_id": "PAIR_043",
+    "match_target_id": "FOUND_142",
+    "description": "Lost 2nd Year Data Structures spiral bound lab observation notebook in Tech Park Lab 305.",
+    "category": "documents",
+    "brand": "CSE Department",
+    "color": "blue",
+    "location_name": "Tech Park Lab 305",
+    "coordinates": [
+      12.8246,
+      80.0456
+    ],
+    "timestamp": "2026-10-22T16:00:00",
+    "image_filename": "lab_record.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_142",
+    "status": "FOUND",
+    "pair_id": "PAIR_043",
+    "match_target_id": "LOST_142",
+    "description": "Found a blue spiral-bound computer science lab record journal in Tech Park 3rd floor lab.",
+    "category": "documents",
+    "brand": "CSE Department",
+    "color": "blue",
+    "location_name": "Tech Park Lab 305 Bench 12",
+    "coordinates": [
+      12.8246,
+      80.0457
+    ],
+    "timestamp": "2026-10-22T17:00:00",
+    "image_filename": "lab_record.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_143",
+    "status": "LOST",
+    "pair_id": "PAIR_044",
+    "match_target_id": "FOUND_143",
+    "description": "Lost driving license card along with Aadhar card in mini plastic pouch at Library baggage counter.",
+    "category": "documents",
+    "brand": "Govt of India",
+    "color": "yellow & blue",
+    "location_name": "Central Library Baggage Desk",
+    "coordinates": [
+      12.8231,
+      80.0442
+    ],
+    "timestamp": "2026-10-23T11:00:00",
+    "image_filename": "driving_license.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_143",
+    "status": "FOUND",
+    "pair_id": "PAIR_044",
+    "match_target_id": "LOST_143",
+    "description": "Found a driver's license ID card inside clear zip pouch on Library entrance floor.",
+    "category": "documents",
+    "brand": "Govt of India",
+    "color": "yellow & blue",
+    "location_name": "Central Library Turnstile Entry",
+    "coordinates": [
+      12.8232,
+      80.0443
+    ],
+    "timestamp": "2026-10-23T11:40:00",
+    "image_filename": "driving_license.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_144",
+    "status": "LOST",
+    "pair_id": "PAIR_045",
+    "match_target_id": "FOUND_144",
+    "description": "Misplaced Casio fx-991EX Classwiz scientific calculator with protective slip-on lid in UB 402.",
+    "category": "accessories",
+    "brand": "Casio",
+    "color": "black & white",
+    "location_name": "UB 4th Floor Classroom 402",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-23T13:30:00",
+    "image_filename": "casio_991ex.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_144",
+    "status": "FOUND",
+    "pair_id": "PAIR_045",
+    "match_target_id": "LOST_144",
+    "description": "Found a black and white Casio engineering calculator with sliding cover in UB classroom 402.",
+    "category": "accessories",
+    "brand": "Casio",
+    "color": "black & white",
+    "location_name": "UB Room 402 Teacher Podium",
+    "coordinates": [
+      12.8221,
+      80.0431
+    ],
+    "timestamp": "2026-10-23T14:15:00",
+    "image_filename": "casio_991ex.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_145",
+    "status": "LOST",
+    "pair_id": "PAIR_046",
+    "match_target_id": "FOUND_145",
+    "description": "Lost grey Casio fx-82MS scientific calculator with name Biswa scratched on back in Mechanical block.",
+    "category": "accessories",
+    "brand": "Casio",
+    "color": "grey",
+    "location_name": "Mechanical Block Room 108",
+    "coordinates": [
+      12.8255,
+      80.0445
+    ],
+    "timestamp": "2026-10-24T10:00:00",
+    "image_filename": "casio_82ms.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_145",
+    "status": "FOUND",
+    "pair_id": "PAIR_046",
+    "match_target_id": "LOST_145",
+    "description": "Found a classic grey Casio calculator with engraved initials on desk in Mechanical Room 108.",
+    "category": "accessories",
+    "brand": "Casio",
+    "color": "grey",
+    "location_name": "Mechanical Department Class 108",
+    "coordinates": [
+      12.8256,
+      80.0446
+    ],
+    "timestamp": "2026-10-24T11:00:00",
+    "image_filename": "casio_82ms.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_146",
+    "status": "LOST",
+    "pair_id": "PAIR_047",
+    "match_target_id": "FOUND_146",
+    "description": "Lost Royal Enfield Classic bike ignition key with brown leather fob in Abode Valley parking.",
+    "category": "accessories",
+    "brand": "Royal Enfield",
+    "color": "silver & brown",
+    "location_name": "Abode Valley Two-Wheeler Parking",
+    "coordinates": [
+      12.8205,
+      80.039
+    ],
+    "timestamp": "2026-10-24T18:45:00",
+    "image_filename": "enfield_key.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_146",
+    "status": "FOUND",
+    "pair_id": "PAIR_047",
+    "match_target_id": "LOST_146",
+    "description": "Found a motorcycle key attached to an embossed leather RE keychain in Abode parking lot.",
+    "category": "accessories",
+    "brand": "Royal Enfield",
+    "color": "silver & brown",
+    "location_name": "Abode Valley Parking Block C",
+    "coordinates": [
+      12.8206,
+      80.0391
+    ],
+    "timestamp": "2026-10-24T19:30:00",
+    "image_filename": "enfield_key.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_147",
+    "status": "LOST",
+    "pair_id": "PAIR_048",
+    "match_target_id": "FOUND_147",
+    "description": "Lost Yamaha MT-15 bike key with a blue Monster energy tag at Tech Park scooter parking.",
+    "category": "accessories",
+    "brand": "Yamaha",
+    "color": "black & blue",
+    "location_name": "Tech Park Scooter Parking Area",
+    "coordinates": [
+      12.8245,
+      80.0455
+    ],
+    "timestamp": "2026-10-25T09:15:00",
+    "image_filename": "yamaha_key.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_147",
+    "status": "FOUND",
+    "pair_id": "PAIR_048",
+    "match_target_id": "LOST_147",
+    "description": "Found a bike key on blue fabric tag lying on ground in Tech Park motorcycle lot.",
+    "category": "accessories",
+    "brand": "Yamaha",
+    "color": "black & blue",
+    "location_name": "Tech Park Bike Stand Slot 45",
+    "coordinates": [
+      12.8247,
+      80.0456
+    ],
+    "timestamp": "2026-10-25T10:00:00",
+    "image_filename": "yamaha_key.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_148",
+    "status": "LOST",
+    "pair_id": "PAIR_049",
+    "match_target_id": "FOUND_148",
+    "description": "Left black Cello InsuShield 750ml insulated thermos flask on Open Air Theatre amphitheatre steps.",
+    "category": "accessories",
+    "brand": "Cello",
+    "color": "black",
+    "location_name": "Open Air Theatre Mid Steps",
+    "coordinates": [
+      12.824,
+      80.0435
+    ],
+    "timestamp": "2026-10-25T17:00:00",
+    "image_filename": "cello_flask.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_148",
+    "status": "FOUND",
+    "pair_id": "PAIR_049",
+    "match_target_id": "LOST_148",
+    "description": "Found a matte black thermal water flask sitting on Open Air Theatre mid row seats.",
+    "category": "accessories",
+    "brand": "Cello",
+    "color": "black",
+    "location_name": "OAT Stage Right Seating",
+    "coordinates": [
+      12.8242,
+      80.0437
+    ],
+    "timestamp": "2026-10-25T18:15:00",
+    "image_filename": "cello_flask.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_149",
+    "status": "LOST",
+    "pair_id": "PAIR_050",
+    "match_target_id": "FOUND_149",
+    "description": "Lost translucent blue Tupperware 1 liter water bottle on Sports Complex tennis court bleachers.",
+    "category": "accessories",
+    "brand": "Tupperware",
+    "color": "blue",
+    "location_name": "Sports Complex Tennis Bleachers",
+    "coordinates": [
+      12.826,
+      80.047
+    ],
+    "timestamp": "2026-10-26T07:45:00",
+    "image_filename": "tupperware_bottle.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_149",
+    "status": "FOUND",
+    "pair_id": "PAIR_050",
+    "match_target_id": "LOST_149",
+    "description": "Found a blue Tupperware plastic drink bottle on sports court boundary fence.",
+    "category": "accessories",
+    "brand": "Tupperware",
+    "color": "blue",
+    "location_name": "Sports Complex Court Fence",
+    "coordinates": [
+      12.8262,
+      80.0473
+    ],
+    "timestamp": "2026-10-26T08:50:00",
+    "image_filename": "tupperware_bottle.jpg",
+    "data_source": "REAL_CURATED"
   }
 ]

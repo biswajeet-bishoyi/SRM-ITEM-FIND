@@ -16,5 +16,50 @@
       "Left behind a blue Nike rucksack near Java Canteen in Tech Park.",
       "Dark blue Nike bag misplaced at Tech Park canteen tables."
     ]
+  },
+  {
+    "pair_id": "PAIR_003",
+    "original": "Dropped my student ID card with blue lanyard around UB building food court.",
+    "variations": [
+      "Lost SRM college ID card attached to blue strap near UB canteen.",
+      "My university identification badge with blue ribbon dropped at UB food court.",
+      "Misplaced student identity card near University Building dining area."
+    ]
+  },
+  {
+    "pair_id": "PAIR_004",
+    "original": "Misplaced an Apple Watch Series 7 with black silicone strap near sports complex tennis court.",
+    "variations": [
+      "Lost my black Apple smartwatch around the tennis ground.",
+      "Dropped an iWatch series 7 with rubber strap at sports complex.",
+      "Looking for missing black smartwatch left near outdoor sports courts."
+    ]
+  },
+  {
+    "pair_id": "PAIR_007",
+    "original": "Lost a black 65W Dell laptop charger adapter at Tech Park 6th floor lab.",
+    "variations": [
+      "Left my black Dell power brick in Tech park lab 602.",
+      "Missing Dell laptop adapter cable on 6th floor TP computer room.",
+      "Dell Type-C 65 watt charger misplaced in lab 602."
+    ]
+  },
+  {
+    "pair_id": "PAIR_016",
+    "original": "Lost dark blue Midnight Apple MacBook Air M2 laptop in dark grey felt sleeve in library.",
+    "variations": [
+      "My M2 MacBook Air in grey cover went missing on library 3rd floor.",
+      "Left behind a midnight blue Apple laptop inside a felt sleeve at central library.",
+      "Apple Mac Air misplaced on digital library reading desks."
+    ]
+  },
+  {
+    "pair_id": "PAIR_045",
+    "original": "Misplaced Casio fx-991EX Classwiz scientific calculator with protective slip-on lid in UB 402.",
+    "variations": [
+      "Lost my Casio 991EX scientific calculator with cover in classroom 402.",
+      "Looking for black and white Casio math calculator left in UB hall 402.",
+      "Casio Classwiz calculator misplaced on classroom desk in University Building."
+    ]
   }
 ]
