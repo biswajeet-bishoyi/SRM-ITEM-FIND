@@ -53,34 +53,44 @@ fusion_engine = None
 notification_manager = None
 vector_db = None
 
-# Initialize Core AI Components with comprehensive error capture
-try:
-    from src.preprocessing.text_cleaner import clean_text, extract_structured_attributes
-    from src.preprocessing.dataset_generator import generate_dataset
-    from src.text_matching.encoder import TransformerTextEncoder, compute_cosine_similarity
-    from src.image_matching.encoder import ImageEncoder
-    from src.multimodal.fusion import MultimodalFusionEngine, compute_location_similarity, compute_time_similarity, compute_attribute_similarity
-    from src.retrieval.vector_db import VectorDatabase
-    from src.genai.explanation_generator import GenAIExplanationEngine, GenAINormalizerEngine, GenAISyntheticDataGenerator
-    from src.notification.notifier import NotificationManager
+is_initialized = False
 
-    dataset = generate_dataset(PROJECT_ROOT)
-    text_encoder = TransformerTextEncoder()
-    image_encoder = ImageEncoder()
-    fusion_engine = MultimodalFusionEngine()
-    notification_manager = NotificationManager(confidence_threshold=0.50)
-    vector_db = VectorDatabase()
+def init_app():
+    global is_initialized, dataset, text_encoder, image_encoder, fusion_engine, notification_manager, vector_db, startup_error
+    if is_initialized:
+        return
+    try:
+        from src.preprocessing.text_cleaner import clean_text, extract_structured_attributes
+        from src.preprocessing.dataset_generator import generate_dataset
+        from src.text_matching.encoder import TransformerTextEncoder, compute_cosine_similarity
+        from src.image_matching.encoder import ImageEncoder
+        from src.multimodal.fusion import MultimodalFusionEngine, compute_location_similarity, compute_time_similarity, compute_attribute_similarity
+        from src.retrieval.vector_db import VectorDatabase
+        from src.genai.explanation_generator import GenAIExplanationEngine, GenAINormalizerEngine, GenAISyntheticDataGenerator
+        from src.notification.notifier import NotificationManager
 
-    corpus = [r["description"] for r in dataset]
-    text_encoder.fit_fallback(corpus)
+        dataset = generate_dataset(PROJECT_ROOT)
+        text_encoder = TransformerTextEncoder()
+        image_encoder = ImageEncoder()
+        fusion_engine = MultimodalFusionEngine()
+        notification_manager = NotificationManager(confidence_threshold=0.50)
+        vector_db = VectorDatabase()
 
-    for item in dataset:
-        t_emb = text_encoder.encode(item["description"])
-        i_emb = image_encoder.encode(item["image_filename"])
-        vector_db.add_record(item, t_emb, i_emb)
-except Exception as e:
-    startup_error = traceback.format_exc()
-    print(f"[FATAL STARTUP ERROR]: {startup_error}")
+        corpus = [r["description"] for r in dataset]
+        text_encoder.fit_fallback(corpus)
+
+        for item in dataset:
+            t_emb = text_encoder.encode(item["description"])
+            i_emb = image_encoder.encode(item["image_filename"])
+            vector_db.add_record(item, t_emb, i_emb)
+        is_initialized = True
+    except Exception as e:
+        startup_error = traceback.format_exc()
+        print(f"[FATAL STARTUP ERROR]: {startup_error}")
+
+@app.on_event("startup")
+def on_startup():
+    init_app()
 
 
 class ReportItemRequest(BaseModel):
@@ -111,6 +121,7 @@ class SearchMatchRequest(BaseModel):
 
 @app.get("/api/health")
 def health_check():
+    init_app()
     if startup_error:
         return {
             "status": "initialization_error",
@@ -128,11 +139,14 @@ def health_check():
 
 @app.get("/api/dataset")
 def get_dataset():
-    return {"total_records": len(vector_db.records), "records": vector_db.records}
+    init_app()
+    records = vector_db.records if vector_db else []
+    return {"total_records": len(records), "records": records}
 
 
 def build_report_record(report: ReportItemRequest, id_prefix: str) -> Dict[str, Any]:
     """Create a record from a submitted report, saving its photo (if any) and indexing its embeddings."""
+    init_app()
     new_id = f"{id_prefix}_{len(vector_db.records) + 101}"
     record = report.model_dump(exclude={"image_data"})
     record["id"] = new_id
@@ -170,15 +184,9 @@ def report_found_item(report: ReportItemRequest):
 
 @app.post("/api/search/matches")
 def search_matches(req: SearchMatchRequest):
-    """
-    Multimodal Match Search API:
-    1. Encodes query text & image.
-    2. Retrieves top-K nearest candidates from Vector DB.
-     3. Computes multimodal similarity scores and keeps candidates with at least
-         40% fused confidence.
-     4. Generates GenAI evidence explanations for qualifying candidates.
-     5. Triggers notification if score >= threshold.
-    """
+    init_app()
+    if startup_error:
+        raise HTTPException(status_code=500, detail=f"AI backend initialization failed: {startup_error}")
     q_t_emb = text_encoder.encode(req.query_description)
     query_img = ImageEncoder.decode_data_url(req.image_data)
     if req.image_data and query_img is None:
