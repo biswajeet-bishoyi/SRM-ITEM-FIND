@@ -7,6 +7,7 @@ GenAI explanations, vector retrieval, and automated notifications.
 import os
 import sys
 import json
+import traceback
 from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,16 +18,6 @@ from pydantic import BaseModel
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
-
-from src.preprocessing.text_cleaner import clean_text, extract_structured_attributes
-from src.preprocessing.dataset_generator import generate_dataset
-from src.text_matching.encoder import TransformerTextEncoder, compute_cosine_similarity
-from src.image_matching.encoder import ImageEncoder
-from src.multimodal.fusion import MultimodalFusionEngine, compute_location_similarity, compute_time_similarity, compute_attribute_similarity
-from src.retrieval.vector_db import VectorDatabase
-from src.genai.explanation_generator import GenAIExplanationEngine, GenAINormalizerEngine, GenAISyntheticDataGenerator
-from src.notification.notifier import NotificationManager
-
 
 app = FastAPI(
     title="SRM CampusFind API",
@@ -54,16 +45,32 @@ except OSError:
     UPLOADS_DIR = os.path.join("/tmp", "uploads")
     os.makedirs(UPLOADS_DIR, exist_ok=True)
 
-# Initialize Core AI Components
-dataset = generate_dataset(PROJECT_ROOT)
-text_encoder = TransformerTextEncoder()
-image_encoder = ImageEncoder()
-fusion_engine = MultimodalFusionEngine()
-notification_manager = NotificationManager(confidence_threshold=0.50)
-vector_db = VectorDatabase()
+startup_error = None
+dataset = []
+text_encoder = None
+image_encoder = None
+fusion_engine = None
+notification_manager = None
+vector_db = None
 
-# Populate Vector DB
+# Initialize Core AI Components with comprehensive error capture
 try:
+    from src.preprocessing.text_cleaner import clean_text, extract_structured_attributes
+    from src.preprocessing.dataset_generator import generate_dataset
+    from src.text_matching.encoder import TransformerTextEncoder, compute_cosine_similarity
+    from src.image_matching.encoder import ImageEncoder
+    from src.multimodal.fusion import MultimodalFusionEngine, compute_location_similarity, compute_time_similarity, compute_attribute_similarity
+    from src.retrieval.vector_db import VectorDatabase
+    from src.genai.explanation_generator import GenAIExplanationEngine, GenAINormalizerEngine, GenAISyntheticDataGenerator
+    from src.notification.notifier import NotificationManager
+
+    dataset = generate_dataset(PROJECT_ROOT)
+    text_encoder = TransformerTextEncoder()
+    image_encoder = ImageEncoder()
+    fusion_engine = MultimodalFusionEngine()
+    notification_manager = NotificationManager(confidence_threshold=0.50)
+    vector_db = VectorDatabase()
+
     corpus = [r["description"] for r in dataset]
     text_encoder.fit_fallback(corpus)
 
@@ -72,8 +79,8 @@ try:
         i_emb = image_encoder.encode(item["image_filename"])
         vector_db.add_record(item, t_emb, i_emb)
 except Exception as e:
-    import traceback
-    print(f"[Warning during Vector DB initialization]: {e}\n{traceback.format_exc()}")
+    startup_error = traceback.format_exc()
+    print(f"[FATAL STARTUP ERROR]: {startup_error}")
 
 
 class ReportItemRequest(BaseModel):
@@ -104,10 +111,17 @@ class SearchMatchRequest(BaseModel):
 
 @app.get("/api/health")
 def health_check():
+    if startup_error:
+        return {
+            "status": "initialization_error",
+            "system": "SRM CampusFind AI Backend",
+            "error": startup_error,
+            "environment": "vercel" if os.environ.get("VERCEL") else "local"
+        }
     return {
         "status": "online",
         "system": "SRM CampusFind AI Backend",
-        "dataset_size": len(vector_db.records),
+        "dataset_size": len(vector_db.records) if vector_db else 0,
         "environment": "vercel" if os.environ.get("VERCEL") else "local"
     }
 
@@ -251,6 +265,18 @@ if os.path.exists(UPLOADS_DIR):
 
 @app.get("/", response_class=HTMLResponse)
 def serve_index():
+    if startup_error:
+        return f"""
+        <!DOCTYPE html>
+        <html>
+        <head><title>SRM CampusFind — Initialization Error</title></head>
+        <body style="font-family:system-ui,-apple-system,sans-serif;background:#090d16;color:#f87171;padding:40px;line-height:1.5;">
+            <h1 style="color:#ef4444;">SRM CampusFind — Backend Initialization Error</h1>
+            <p style="color:#94a3b8;">An error occurred during component startup:</p>
+            <pre style="background:#131d2e;color:#fca5a5;padding:20px;border-radius:8px;overflow-x:auto;border:1px solid #334155;">{startup_error}</pre>
+        </body>
+        </html>
+        """
     index_path = os.path.join(frontend_dir, "index.html")
     if os.path.exists(index_path):
         with open(index_path, "r", encoding="utf-8") as f:
