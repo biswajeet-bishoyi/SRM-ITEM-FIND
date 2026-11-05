@@ -10,6 +10,7 @@ import os
 import random
 from datetime import datetime, timedelta
 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATASET_PATH = "data/processed/srm_campusfind_dataset.json"
 SYNTHETIC_PATH = "data/synthetic/paraphrased_variations.json"
 
@@ -846,7 +847,7 @@ SYNTHETIC_VARIATIONS_LIST = [
 ]
 
 
-def generate_dataset(base_dir: str = ".", force_regenerate: bool = False):
+def generate_dataset(base_dir: str = PROJECT_ROOT, force_regenerate: bool = False):
     """Generate and save structured dataset for SRM CampusFind with 50 pairs (100 items)."""
     dataset_file = os.path.join(base_dir, DATASET_PATH)
     synthetic_file = os.path.join(base_dir, SYNTHETIC_PATH)
@@ -882,7 +883,7 @@ def generate_dataset(base_dir: str = ".", force_regenerate: bool = False):
             "location_name": item["location_lost"],
             "coordinates": item["lost_coords"],
             "timestamp": item["time_lost"],
-            "image_filename": item["image_label"],
+            "image_filename": f"data/images/lost_{item['pair_id']}.jpg",
             "data_source": "REAL_CURATED"
         })
         
@@ -899,7 +900,7 @@ def generate_dataset(base_dir: str = ".", force_regenerate: bool = False):
             "location_name": item["location_found"],
             "coordinates": item["found_coords"],
             "timestamp": item["time_found"],
-            "image_filename": item["image_label"],
+            "image_filename": f"data/images/found_{item['pair_id']}.jpg",
             "data_source": "REAL_CURATED"
         })
         

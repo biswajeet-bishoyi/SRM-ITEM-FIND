@@ -12,6 +12,8 @@ import numpy as np
 from PIL import Image, ImageOps
 from typing import Optional, Union
 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 HAS_TORCHVISION = False
 if not os.environ.get("VERCEL"):
     try:
@@ -36,8 +38,8 @@ def compute_cosine_similarity(vec1: np.ndarray, vec2: np.ndarray) -> float:
 class ImageEncoder:
     """
     Objective 2 Computer Vision / Deep Learning Image Encoder.
-    Uses pretrained CNN/Vision Transformer or PIL Visual Feature Vectorizer
-    to extract shape, color histogram, texture, and structural deep features.
+    Uses pretrained CNN/Vision Transformer or Advanced Visual Feature Vectorizer
+    with foreground object extraction, HSV histograms, color moments, and spatial layout.
     """
     
     def __init__(self, architecture: str = "resnet18"):
@@ -48,12 +50,9 @@ class ImageEncoder:
         
         if HAS_TORCHVISION and not os.environ.get("VERCEL"):
             try:
-                # Initialize ResNet18 feature extractor (removing final classification fc layer)
                 base_model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
                 base_model.eval()
-                # Remove last FC layer to get 512-dim feature embedding
                 self.model = torch.nn.Sequential(*list(base_model.children())[:-1])
-                
                 self.transform = transforms.Compose([
                     transforms.Resize((224, 224)),
                     transforms.ToTensor(),
@@ -64,58 +63,93 @@ class ImageEncoder:
                 ])
                 print(f"[ImageEncoder] Initialized Deep Learning Vision Encoder ({architecture})")
             except Exception as e:
-                print(f"[ImageEncoder] Warning loading PyTorch model ({e}). Using Composite Visual Feature Extractor.")
                 self.use_fallback = True
         else:
             self.use_fallback = True
 
     def extract_composite_features(self, img: Image.Image) -> np.ndarray:
         """
-        Extract non-pixel-wise spatial RGB color histogram + aspect ratio + texture feature vector.
-        Guarantees fast, robust visual matching without needing large GPU downloads.
+        Extract foreground-aware object color moments, HSV histogram, spatial luminance,
+        and aspect ratio feature vector.
         """
-        img_resized = img.resize((128, 128)).convert('RGB')
-        arr = np.array(img_resized)
+        img_rgb = img.resize((128, 128)).convert('RGB')
+        arr = np.array(img_rgb, dtype=np.float32)
         
-        # 1. 3D Color Histograms (RGB channels, 16 bins each = 48 features)
-        r_hist, _ = np.histogram(arr[:, :, 0], bins=16, range=(0, 256), density=True)
-        g_hist, _ = np.histogram(arr[:, :, 1], bins=16, range=(0, 256), density=True)
-        b_hist, _ = np.histogram(arr[:, :, 2], bins=16, range=(0, 256), density=True)
+        # 1. Background subtraction / foreground object estimation
+        border_pixels = np.concatenate([arr[0, :, :], arr[-1, :, :], arr[:, 0, :], arr[:, -1, :]], axis=0)
+        bg_mean = np.mean(border_pixels, axis=0)
+        color_diff = np.linalg.norm(arr - bg_mean, axis=2)
+        fg_mask = color_diff > 25.0
         
-        # 2. Aspect Ratio feature
+        if np.sum(fg_mask) > 100:
+            fg_pixels = arr[fg_mask]
+            fg_mean = np.mean(fg_pixels, axis=0) / 255.0
+            fg_std = np.std(fg_pixels, axis=0) / 255.0
+            fill_ratio = np.array([np.sum(fg_mask) / (128.0 * 128.0)])
+        else:
+            fg_mean = np.mean(arr, axis=(0, 1)) / 255.0
+            fg_std = np.std(arr, axis=(0, 1)) / 255.0
+            fill_ratio = np.array([0.5])
+            
+        # 2. HSV Color Distribution
+        hsv = np.array(img_rgb.convert('HSV'), dtype=np.float32)
+        h_hist, _ = np.histogram(hsv[:, :, 0], bins=18, range=(0, 256), density=True)
+        s_hist, _ = np.histogram(hsv[:, :, 1], bins=10, range=(0, 256), density=True)
+        v_hist, _ = np.histogram(hsv[:, :, 2], bins=10, range=(0, 256), density=True)
+        
+        # 3. Spatial Luminance Grid (4x4)
+        gray = np.array(img_rgb.resize((64, 64)).convert('L'), dtype=np.float32) / 255.0
+        grid = [np.mean(gray[i*16:(i+1)*16, j*16:(j+1)*16]) for i in range(4) for j in range(4)]
+        
+        # 4. Aspect Ratio
         w, h = img.size
-        aspect_ratio = np.array([w / max(1, h)])
+        aspect_ratio = np.array([float(w) / max(1.0, float(h))])
         
-        # 3. Spatial Grid Luminance Intensity (4x4 spatial blocks = 16 features)
-        gray = img_resized.convert('L')
-        gray_arr = np.array(gray)
-        grid_features = []
-        h_chunk, w_chunk = 32, 32
-        for i in range(4):
-            for j in range(4):
-                block = gray_arr[i*h_chunk:(i+1)*h_chunk, j*w_chunk:(j+1)*w_chunk]
-                grid_features.append(np.mean(block) / 255.0)
-                grid_features.append(np.std(block) / 255.0)
-                
-        feature_vector = np.concatenate([r_hist, g_hist, b_hist, aspect_ratio, grid_features])
-        # Normalize
-        norm = np.linalg.norm(feature_vector)
+        vec = np.concatenate([
+            fg_mean * 3.0,
+            fg_std * 2.0,
+            fill_ratio * 2.0,
+            aspect_ratio,
+            h_hist * 15.0,
+            s_hist * 8.0,
+            v_hist * 8.0,
+            grid
+        ])
+        
+        # Zero-center and L2-normalize
+        vec = vec - np.mean(vec)
+        norm = np.linalg.norm(vec)
         if norm > 0:
-            feature_vector = feature_vector / norm
-        return feature_vector
+            vec = vec / norm
+        return vec
 
     def encode(self, image_input: Union[str, Image.Image, None]) -> Optional[np.ndarray]:
         """
         Encode an image path or PIL Image into a feature embedding vector.
-        Returns None when no image is available, so the fusion engine can treat
-        the visual modality as missing instead of comparing meaningless vectors.
+        Resolves file paths directly, or searches in PROJECT_ROOT and data/images/.
         """
         if image_input is None:
             return None
+            
+        img = None
         if isinstance(image_input, str):
-            if not os.path.exists(image_input):
+            candidates = [
+                image_input,
+                os.path.join(PROJECT_ROOT, image_input),
+                os.path.join(PROJECT_ROOT, "data", "images", image_input),
+                os.path.join(PROJECT_ROOT, "data", "images", os.path.basename(image_input)),
+                os.path.join("data", "images", image_input),
+                os.path.join("data", "images", os.path.basename(image_input))
+            ]
+            for cand in candidates:
+                if os.path.exists(cand):
+                    try:
+                        img = Image.open(cand)
+                        break
+                    except Exception:
+                        pass
+            if img is None:
                 return None
-            img = Image.open(image_input)
         else:
             img = image_input
             
@@ -127,7 +161,7 @@ class ImageEncoder:
                     embedding = self.model(tensor).squeeze().numpy().flatten()
                 norm = np.linalg.norm(embedding)
                 return embedding / norm if norm > 0 else embedding
-            except Exception as e:
+            except Exception:
                 return self.extract_composite_features(img)
         else:
             return self.extract_composite_features(img)

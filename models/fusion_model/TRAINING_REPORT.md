@@ -1,6 +1,6 @@
 # SRM CampusFind — Model Training & Optimization Report
 
-**Trained At:** 2026-11-06T03:41:03.074190  
+**Trained At:** 2026-11-06T04:18:59.438852  
 **Model Architecture:** Learned Multimodal Fusion Engine (Supervised Gradient-Optimized Linear Calibration)  
 **Dataset Size:** 400 pairs (320 Train / 80 Test)
 
@@ -12,11 +12,11 @@ The training pipeline learned optimal weighting parameters by minimizing cross-e
 
 | Modality | Learned Weight | Baseline Default Weight | Relative Influence |
 | :--- | :---: | :---: | :--- |
-| **Semantic Text Similarity ($S_{\text{text}}$)** | **0.0656** | 0.3500 | Calibrated |
-| **Visual Appearance Similarity ($S_{\text{image}}$)** | **0.0650** | 0.3000 | Calibrated |
-| **Campus Geo-Proximity ($S_{\text{location}}$)** | **0.2347** | 0.1500 | Increased |
-| **Temporal Compatibility ($S_{\text{time}}$)** | **0.3267** | 0.1000 | Increased |
-| **Attribute & Category Overlap ($S_{\text{attribute}}$)** | **0.3080** | 0.1000 | Increased |
+| **Semantic Text Similarity ($S_{\text{text}}$)** | **0.0736** | 0.3500 | Calibrated |
+| **Visual Appearance Similarity ($S_{\text{image}}$)** | **0.0127** | 0.3000 | Calibrated |
+| **Campus Geo-Proximity ($S_{\text{location}}$)** | **0.2467** | 0.1500 | Increased |
+| **Temporal Compatibility ($S_{\text{time}}$)** | **0.3434** | 0.1000 | Increased |
+| **Attribute & Category Overlap ($S_{\text{attribute}}$)** | **0.3236** | 0.1000 | Increased |
 
 ---
 
@@ -31,7 +31,7 @@ Evaluated on unseen test query pairs with hard category and campus location conf
 | **Recall** | **100.00%** | $\ge 85.0\%$ | ✅ High Coverage |
 | **F1-Score** | **1.0000** | $\ge 0.8500$ | ✅ Robust |
 | **ROC-AUC** | **1.0000** | $\ge 0.9000$ | ✅ Excellent Discrimination |
-| **Optimal Decision Threshold** | **0.65** | $0.5000$ | Learned from Validation Set |
+| **Optimal Decision Threshold** | **0.69** | $0.5000$ | Learned from Validation Set |
 
 ### Confusion Matrix
 - **True Positives (TP):** 10
@@ -44,4 +44,4 @@ Evaluated on unseen test query pairs with hard category and campus location conf
 ## 🔬 Key Training Insights
 1. **Semantic Text & Location Dominance:** On the SRM campus, semantic text description combined with physical location proximity proved to be the most decisive signals for filtering out false positives.
 2. **Hard Negative Resistance:** Mining category distractors (e.g. Dell laptop vs HP laptop in Tech Park) prevented the model from returning false matches on vague descriptions.
-3. **Calibrated Notification Threshold:** Setting the decision threshold to **0.65** minimizes student notification fatigue while ensuring genuine lost items are flagged promptly.
+3. **Calibrated Notification Threshold:** Setting the decision threshold to **0.69** minimizes student notification fatigue while ensuring genuine lost items are flagged promptly.

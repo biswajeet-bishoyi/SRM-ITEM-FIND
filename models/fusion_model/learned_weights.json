@@ -1,15 +1,15 @@
 {
   "model_name": "SRM-Multimodal-Fusion-Engine-V1",
-  "trained_at": "2026-11-06T03:41:03.074190",
+  "trained_at": "2026-11-06T04:18:59.438852",
   "weights": {
-    "w_text": 0.0656,
-    "w_image": 0.065,
-    "w_location": 0.2347,
-    "w_time": 0.3267,
-    "w_attribute": 0.308
+    "w_text": 0.0736,
+    "w_image": 0.0127,
+    "w_location": 0.2467,
+    "w_time": 0.3434,
+    "w_attribute": 0.3236
   },
-  "optimal_threshold": 0.65,
-  "calibration_bias": -2.2049,
+  "optimal_threshold": 0.69,
+  "calibration_bias": -2.2276,
   "metrics": {
     "test_accuracy": 1.0,
     "test_precision": 1.0,
