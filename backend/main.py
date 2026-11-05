@@ -45,6 +45,30 @@ except OSError:
     UPLOADS_DIR = os.path.join("/tmp", "uploads")
     os.makedirs(UPLOADS_DIR, exist_ok=True)
 
+USER_REPORTS_FILE = os.path.join(UPLOADS_DIR, "user_submitted_records.json")
+
+def persist_user_record(rec: Dict[str, Any]):
+    try:
+        existing = []
+        if os.path.exists(USER_REPORTS_FILE):
+            with open(USER_REPORTS_FILE, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+        existing = [r for r in existing if r.get("id") != rec.get("id")]
+        existing.append(rec)
+        with open(USER_REPORTS_FILE, "w", encoding="utf-8") as f:
+            json.dump(existing, f)
+    except Exception as e:
+        print(f"[persist_user_record] Note: {e}")
+
+def load_user_records() -> List[Dict[str, Any]]:
+    if os.path.exists(USER_REPORTS_FILE):
+        try:
+            with open(USER_REPORTS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
 startup_error = None
 dataset = []
 text_encoder = None
@@ -101,6 +125,15 @@ def init_app():
                 t_emb = text_encoder.encode(item["description"])
                 i_emb = image_encoder.encode(item["image_filename"])
                 vector_db.add_record(item, t_emb, i_emb)
+
+        # Ingest any previously submitted user records
+        for urec in load_user_records():
+            if not any(r.get("id") == urec.get("id") for r in vector_db.records):
+                u_img = ImageEncoder.decode_data_url(urec.get("image_url") or urec.get("image_data"))
+                u_t_emb = text_encoder.encode(urec["description"])
+                u_i_emb = image_encoder.encode(u_img) if u_img else None
+                vector_db.add_record(urec, u_t_emb, u_i_emb)
+
         is_initialized = True
     except Exception as e:
         startup_error = traceback.format_exc()
@@ -135,6 +168,7 @@ class SearchMatchRequest(BaseModel):
     timestamp: Optional[str] = "2026-10-05T12:00:00"
     image_data: Optional[str] = None  # Optional photo as a base64 data URL
     weights: Optional[Dict[str, float]] = None
+    user_records: Optional[List[Dict[str, Any]]] = None
 
 
 @app.get("/api/health")
@@ -174,14 +208,25 @@ def build_report_record(report: ReportItemRequest, id_prefix: str) -> Dict[str, 
     if report.image_data and img is None:
         raise HTTPException(status_code=400, detail="Uploaded photo could not be read as an image.")
     if img is not None:
-        img.thumbnail((800, 800))
-        img.save(os.path.join(UPLOADS_DIR, f"{new_id}.jpg"), "JPEG", quality=85)
-        record["image_filename"] = os.path.join(UPLOADS_DIR, f"{new_id}.jpg")
-        record["image_url"] = f"/uploads/{new_id}.jpg"
+        import io, base64
+        img.thumbnail((450, 450))
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG", quality=82)
+        b64_str = base64.b64encode(buf.getvalue()).decode("utf-8")
+        data_url = f"data:image/jpeg;base64,{b64_str}"
+        record["image_url"] = data_url
+        record["image_data"] = data_url
+        try:
+            filepath = os.path.join(UPLOADS_DIR, f"{new_id}.jpg")
+            img.save(filepath, "JPEG", quality=85)
+            record["image_filename"] = filepath
+        except Exception:
+            record["image_filename"] = data_url
 
     t_emb = text_encoder.encode(record["description"])
     i_emb = image_encoder.encode(img)
     vector_db.add_record(record, t_emb, i_emb)
+    persist_user_record(record)
     return record
 
 
@@ -264,6 +309,16 @@ def search_matches(req: SearchMatchRequest):
     init_app()
     if startup_error:
         raise HTTPException(status_code=500, detail=f"AI backend initialization failed: {startup_error}")
+
+    # Ensure any client-side user records are indexed in vector_db (supports serverless lambda resets)
+    if req.user_records:
+        for urec in req.user_records:
+            if not any(r.get("id") == urec.get("id") for r in vector_db.records):
+                u_img = ImageEncoder.decode_data_url(urec.get("image_url") or urec.get("image_data"))
+                u_t_emb = text_encoder.encode(urec["description"])
+                u_i_emb = image_encoder.encode(u_img) if u_img else None
+                vector_db.add_record(urec, u_t_emb, u_i_emb)
+
     q_t_emb = text_encoder.encode(req.query_description)
     query_img = ImageEncoder.decode_data_url(req.image_data)
     if req.image_data and query_img is None:

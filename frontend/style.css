@@ -1502,3 +1502,27 @@ input[type="datetime-local"] {
     color: #34D399;
 }
 
+.status-chip.live-chip, .user-live-tag {
+    background: rgba(16, 185, 129, 0.18);
+    border: 1px solid rgba(16, 185, 129, 0.7);
+    color: #34D399;
+    font-weight: 700;
+    font-size: 0.68rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.catalog-card.user-submitted-card {
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.1);
+}
+
+.match-card.user-submitted-match {
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.12);
+}
+

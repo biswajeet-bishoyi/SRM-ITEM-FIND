@@ -248,27 +248,52 @@ function loadPreset(idx, autoRun = false) {
 let allCatalogRecords = [];
 let currentCatalogFilter = "ALL";
 
+function getLocalUserReports() {
+    try {
+        return JSON.parse(localStorage.getItem("srm_user_reports") || "[]");
+    } catch(e) {
+        return [];
+    }
+}
+
+function saveUserReportLocally(rec) {
+    try {
+        const existing = getLocalUserReports();
+        const filtered = existing.filter(r => r.id !== rec.id);
+        filtered.unshift(rec);
+        localStorage.setItem("srm_user_reports", JSON.stringify(filtered));
+    } catch(e) {
+        console.warn("Storage error:", e);
+    }
+}
+
 async function fetchDatasetInfo() {
     try {
         const res  = await fetch("/api/dataset");
         const data = await res.json();
-        const records = data.records || [];
-        allCatalogRecords = records;
-        const lost = records.filter(r => r.status === "LOST").length;
-        const found = records.length - lost;
+        const serverRecords = data.records || [];
+        const localRecords = getLocalUserReports();
+        
+        // Merge: ensure local user records appear at the top and are not duplicated
+        const serverIds = new Set(serverRecords.map(r => r.id));
+        const merged = [...localRecords.filter(r => !serverIds.has(r.id)), ...serverRecords];
+        allCatalogRecords = merged;
+        const lost = merged.filter(r => r.status === "LOST").length;
+        const found = merged.length - lost;
 
-        document.getElementById("stat-records").innerText  = `${data.total_records || records.length} Indexed Embeddings`;
-        document.getElementById("nav-status-text").innerText = `Engine online · ${data.total_records || records.length} reports`;
-        document.getElementById("stat-total").innerText    = data.total_records || records.length || 100;
-        document.getElementById("stat-lost").innerText     = lost || 50;
-        document.getElementById("stat-found").innerText    = found || 50;
+        document.getElementById("stat-records").innerText  = `${merged.length} Indexed Embeddings`;
+        document.getElementById("nav-status-text").innerText = `Engine online · ${merged.length} reports`;
+        document.getElementById("stat-total").innerText    = merged.length;
+        document.getElementById("stat-lost").innerText     = lost;
+        document.getElementById("stat-found").innerText    = found;
 
         renderCatalog();
     } catch (e) {
         console.error("Error fetching dataset info:", e);
-        document.getElementById("stat-total").innerText = 100;
-        document.getElementById("stat-lost").innerText  = 50;
-        document.getElementById("stat-found").innerText = 50;
+        const localRecords = getLocalUserReports();
+        document.getElementById("stat-total").innerText = 100 + localRecords.length;
+        document.getElementById("stat-lost").innerText  = 50 + localRecords.filter(r => r.status === "LOST").length;
+        document.getElementById("stat-found").innerText = 50 + localRecords.filter(r => r.status === "FOUND").length;
     }
 }
 
@@ -318,9 +343,11 @@ function renderCatalog(filter = currentCatalogFilter, query = "") {
 
     container.innerHTML = displayItems.map(item => {
         const isLost = item.status === "LOST";
+        const isLiveUpload = item.data_source === "USER_SUBMITTED";
         const badgeClass = isLost ? "lost" : "found";
         const badgeText = isLost ? "Lost Item" : "Found Item";
-        const imgSrc = item.image_filename ? `/${item.image_filename}` : "";
+        const liveChip = isLiveUpload ? `<span class="status-chip live-chip">LIVE UPLOAD</span>` : "";
+        const imgSrc = item.image_url || (item.image_filename ? (item.image_filename.startsWith("data:") || item.image_filename.startsWith("/") ? item.image_filename : `/${item.image_filename}`) : "");
         const fallbackSvg = CATEGORY_SVG[item.category] || CATEGORY_SVG.accessories;
 
         const imgHtml = imgSrc 
@@ -330,7 +357,7 @@ function renderCatalog(filter = currentCatalogFilter, query = "") {
         const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleDateString([], { month: "short", day: "numeric" }) : "";
 
         return `
-            <div class="catalog-card">
+            <div class="catalog-card ${isLiveUpload ? "user-submitted-card" : ""}">
                 <div class="catalog-card-top">
                     <div class="catalog-img-wrap">
                         ${imgHtml}
@@ -338,6 +365,7 @@ function renderCatalog(filter = currentCatalogFilter, query = "") {
                     <div class="catalog-card-info">
                         <div class="catalog-card-badge-row">
                             <span class="status-chip ${badgeClass}">${badgeText}</span>
+                            ${liveChip}
                             <span class="catalog-id">${escapeHtml(item.id)}</span>
                         </div>
                         <div class="catalog-desc" title="${escapeHtml(item.description)}">${escapeHtml(item.description)}</div>
@@ -370,6 +398,31 @@ function selectCatalogItem(itemId) {
     if (item.timestamp && document.getElementById("query-time")) {
         document.getElementById("query-time").value = item.timestamp.slice(0, 16);
     }
+    if (item.location_name && document.getElementById("query-location")) {
+        const idx = CAMPUS_LOCATIONS.findIndex(l => 
+            item.location_name.toLowerCase().includes(l.name.toLowerCase()) || 
+            l.name.toLowerCase().includes(item.location_name.toLowerCase())
+        );
+        if (idx !== -1) {
+            document.getElementById("query-location").value = idx;
+        }
+    }
+
+    // If item has a photo, load it into query dropzone
+    const photoData = item.image_url || item.image_data;
+    if (photoData && photoData.startsWith("data:")) {
+        selectedPhotos["query-photo"] = photoData;
+        const dropzone = document.querySelector("#query-photo")?.closest(".dropzone");
+        if (dropzone) {
+            const preview = dropzone.querySelector(".dropzone-preview");
+            const empty = dropzone.querySelector(".dropzone-empty");
+            if (preview && empty) {
+                preview.querySelector("img").src = photoData;
+                preview.classList.remove("hidden");
+                empty.classList.add("hidden");
+            }
+        }
+    }
 
     openTab("tab-matching");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -392,7 +445,8 @@ async function executeSearch(event) {
         location_name:     loc.name,
         coordinates:       loc.coords,
         timestamp:         time ? `${time}:00` : localTimestamp(),
-        image_data:        selectedPhotos["query-photo"] || null
+        image_data:        selectedPhotos["query-photo"] || null,
+        user_records:      getLocalUserReports()
     };
 
     const container = document.getElementById("results-container");
@@ -460,17 +514,20 @@ function renderMatches(matches) {
         if (m.classification.includes("POSSIBLE")) { tagClass = "tag-possible"; ringColor = "var(--warning)"; }
         if (m.classification.includes("LOW"))      { tagClass = "tag-low";      ringColor = "var(--danger)"; }
 
-        const thumb = cand.image_url
-            ? `<img src="${escapeHtml(cand.image_url)}" alt="Photo of found item">`
+        const isLiveUpload = cand.data_source === "USER_SUBMITTED";
+        const liveTag = isLiveUpload ? `<span class="user-live-tag">LIVE UPLOAD</span>` : "";
+        const imgSrc = cand.image_url || (cand.image_filename ? (cand.image_filename.startsWith("data:") || cand.image_filename.startsWith("/") ? cand.image_filename : `/${cand.image_filename}`) : "");
+        const thumb = imgSrc
+            ? `<img src="${escapeHtml(imgSrc)}" alt="Photo of found item" onerror="this.onerror=null; this.parentElement.innerHTML='${escapeHtml(CATEGORY_SVG[cand.category] || CATEGORY_SVG.accessories)}';">`
             : (CATEGORY_SVG[cand.category] || CATEGORY_SVG.accessories);
 
         const sub = m.subscores;
         return `
-            <div class="match-card ${i === 0 ? "best" : ""}" style="animation-delay:${i * 60}ms">
+            <div class="match-card ${i === 0 ? "best" : ""} ${isLiveUpload ? "user-submitted-match" : ""}" style="animation-delay:${i * 60}ms">
                 <div class="match-top">
                     <div class="match-thumb">${thumb}</div>
                     <div class="match-info">
-                        <div class="match-title"><span class="match-rank">#${i + 1}</span>Found Item ${escapeHtml(cand.id)}</div>
+                        <div class="match-title"><span class="match-rank">#${i + 1}</span>Found Item ${escapeHtml(cand.id)} ${liveTag}</div>
                         <div class="match-location">${pinIcon} ${escapeHtml(cand.location_name)}</div>
                     </div>
                     <div class="score-ring" style="--pct:${scorePct}; --ring-color:${ringColor}" title="Multimodal confidence">
@@ -533,6 +590,9 @@ async function submitReport(event) {
         const data      = await res.json();
         const photoNote = data.record.image_url ? " with photo" : "";
         
+        saveUserReportLocally(data.record);
+        allCatalogRecords = [data.record, ...allCatalogRecords.filter(r => r.id !== data.record.id)];
+
         let msg = `Report submitted — indexed as ${data.record.id}${photoNote}.`;
         
         // Check for instant high-confidence matches (>= 60%)
@@ -550,6 +610,14 @@ async function submitReport(event) {
         const repTime = document.getElementById("rep-time");
         if (repTime) repTime.value = localTimestamp();
 
+        if (status === "FOUND") {
+            currentCatalogFilter = "FOUND";
+            document.querySelectorAll(".catalog-filter-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.dataset.filter === "FOUND");
+            });
+        }
+
+        renderCatalog();
         await fetchDatasetInfo();
         await fetchNotifications();
     } catch (e) {
