@@ -1,0 +1,290 @@
+[
+  {
+    "id": "LOST_100",
+    "status": "LOST",
+    "pair_id": "PAIR_001",
+    "match_target_id": "FOUND_100",
+    "description": "I misplaced my black wireless Airdopes earbuds near the central library floor 2.",
+    "category": "electronics",
+    "brand": "Boat",
+    "color": "black",
+    "location_name": "Central Library, 2nd Floor",
+    "coordinates": [
+      12.8231,
+      80.0442
+    ],
+    "timestamp": "2026-10-04T10:30:00",
+    "image_filename": "black_earbuds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_100",
+    "status": "FOUND",
+    "pair_id": "PAIR_001",
+    "match_target_id": "LOST_100",
+    "description": "Found a pair of dark-colored Bluetooth earphones close to the central library study area.",
+    "category": "electronics",
+    "brand": "Boat",
+    "color": "black",
+    "location_name": "Central Library, Ground Floor Staircase",
+    "coordinates": [
+      12.8234,
+      80.0445
+    ],
+    "timestamp": "2026-10-04T11:15:00",
+    "image_filename": "black_earbuds.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_101",
+    "status": "LOST",
+    "pair_id": "PAIR_002",
+    "match_target_id": "FOUND_101",
+    "description": "Lost my dark blue Nike backpack with laptop inside near Tech Park Java Canteen.",
+    "category": "bags",
+    "brand": "Nike",
+    "color": "navy blue",
+    "location_name": "Tech Park Java Canteen",
+    "coordinates": [
+      12.8245,
+      80.0455
+    ],
+    "timestamp": "2026-10-04T13:00:00",
+    "image_filename": "navy_nike_backpack.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_101",
+    "status": "FOUND",
+    "pair_id": "PAIR_002",
+    "match_target_id": "LOST_101",
+    "description": "Found a navy blue Nike bag sitting on a table near Java Canteen Tech Park.",
+    "category": "bags",
+    "brand": "Nike",
+    "color": "navy blue",
+    "location_name": "Java Canteen Seating Area",
+    "coordinates": [
+      12.8247,
+      80.0458
+    ],
+    "timestamp": "2026-10-04T14:10:00",
+    "image_filename": "navy_nike_backpack.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_102",
+    "status": "LOST",
+    "pair_id": "PAIR_003",
+    "match_target_id": "FOUND_102",
+    "description": "Dropped my student ID card with blue lanyard around UB building food court.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "blue & white",
+    "location_name": "UB Building Food Court",
+    "coordinates": [
+      12.822,
+      80.043
+    ],
+    "timestamp": "2026-10-03T16:45:00",
+    "image_filename": "srm_id_card.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_102",
+    "status": "FOUND",
+    "pair_id": "PAIR_003",
+    "match_target_id": "LOST_102",
+    "description": "Pick up an SRM identity card attached to a blue neck strap outside University Building.",
+    "category": "documents",
+    "brand": "SRM Institute",
+    "color": "blue & white",
+    "location_name": "UB Ground Floor Lobby",
+    "coordinates": [
+      12.8222,
+      80.0432
+    ],
+    "timestamp": "2026-10-03T17:20:00",
+    "image_filename": "srm_id_card.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_103",
+    "status": "LOST",
+    "pair_id": "PAIR_004",
+    "match_target_id": "FOUND_103",
+    "description": "Misplaced an Apple Watch Series 7 with black silicone strap near sports complex tennis court.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "space grey",
+    "location_name": "Sports Complex Tennis Court",
+    "coordinates": [
+      12.826,
+      80.047
+    ],
+    "timestamp": "2026-10-05T08:00:00",
+    "image_filename": "apple_watch.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_103",
+    "status": "FOUND",
+    "pair_id": "PAIR_004",
+    "match_target_id": "LOST_103",
+    "description": "Found a smartwatch with black rubber strap near the outdoor sports ground.",
+    "category": "electronics",
+    "brand": "Apple",
+    "color": "space grey",
+    "location_name": "Outdoor Basketball Court Pavilion",
+    "coordinates": [
+      12.8263,
+      80.0474
+    ],
+    "timestamp": "2026-10-05T09:30:00",
+    "image_filename": "apple_watch.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_104",
+    "status": "LOST",
+    "pair_id": "PAIR_005",
+    "match_target_id": "FOUND_104",
+    "description": "Lost black frame sunglasses in a brown leather case at MTP Canteen.",
+    "category": "accessories",
+    "brand": "Ray-Ban",
+    "color": "black",
+    "location_name": "MTP Canteen",
+    "coordinates": [
+      12.821,
+      80.0415
+    ],
+    "timestamp": "2026-10-05T12:15:00",
+    "image_filename": "rayban_sunglasses.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_104",
+    "status": "FOUND",
+    "pair_id": "PAIR_005",
+    "match_target_id": "LOST_104",
+    "description": "Found a pair of black spectacles/sunglasses inside a brown case on MTP table.",
+    "category": "accessories",
+    "brand": "Ray-Ban",
+    "color": "black",
+    "location_name": "MTP Canteen counter 3",
+    "coordinates": [
+      12.8211,
+      80.0416
+    ],
+    "timestamp": "2026-10-05T12:40:00",
+    "image_filename": "rayban_sunglasses.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_105",
+    "status": "LOST",
+    "pair_id": "PAIR_006",
+    "match_target_id": "FOUND_105",
+    "description": "Left my silver stainless steel Milton water bottle in Architecture Block Lab 3.",
+    "category": "accessories",
+    "brand": "Milton",
+    "color": "silver",
+    "location_name": "Architecture Block Lab 3",
+    "coordinates": [
+      12.8251,
+      80.0421
+    ],
+    "timestamp": "2026-10-02T11:00:00",
+    "image_filename": "silver_bottle.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_105",
+    "status": "FOUND",
+    "pair_id": "PAIR_006",
+    "match_target_id": "LOST_105",
+    "description": "A metallic steel water bottle was handed over from Architecture department 2nd floor.",
+    "category": "accessories",
+    "brand": "Milton",
+    "color": "silver",
+    "location_name": "Architecture Department Office",
+    "coordinates": [
+      12.8253,
+      80.0423
+    ],
+    "timestamp": "2026-10-02T13:00:00",
+    "image_filename": "silver_bottle.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_106",
+    "status": "LOST",
+    "pair_id": "PAIR_007",
+    "match_target_id": "FOUND_106",
+    "description": "Lost a black 65W Dell laptop charger adapter at Tech Park 6th floor lab.",
+    "category": "electronics",
+    "brand": "Dell",
+    "color": "black",
+    "location_name": "Tech Park 6th Floor Lab",
+    "coordinates": [
+      12.8246,
+      80.0456
+    ],
+    "timestamp": "2026-10-04T15:00:00",
+    "image_filename": "dell_charger.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_106",
+    "status": "FOUND",
+    "pair_id": "PAIR_007",
+    "match_target_id": "LOST_106",
+    "description": "Found a Dell laptop power brick charger cord left in Tech Park Lab 602.",
+    "category": "electronics",
+    "brand": "Dell",
+    "color": "black",
+    "location_name": "Tech Park Lab 602",
+    "coordinates": [
+      12.8246,
+      80.0457
+    ],
+    "timestamp": "2026-10-04T16:30:00",
+    "image_filename": "dell_charger.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "LOST_107",
+    "status": "LOST",
+    "pair_id": "PAIR_008",
+    "match_target_id": "FOUND_107",
+    "description": "Lost bike keys with a red Honda keychain near Abode Valley gate.",
+    "category": "accessories",
+    "brand": "Honda",
+    "color": "silver & red",
+    "location_name": "Abode Valley Gate",
+    "coordinates": [
+      12.8205,
+      80.039
+    ],
+    "timestamp": "2026-10-05T19:00:00",
+    "image_filename": "honda_keys.jpg",
+    "data_source": "REAL_CURATED"
+  },
+  {
+    "id": "FOUND_107",
+    "status": "FOUND",
+    "pair_id": "PAIR_008",
+    "match_target_id": "LOST_107",
+    "description": "Found two motorcycle keys with red tag near main road outside Abode.",
+    "category": "accessories",
+    "brand": "Honda",
+    "color": "silver & red",
+    "location_name": "Abode Valley Main Entrance",
+    "coordinates": [
+      12.8207,
+      80.0392
+    ],
+    "timestamp": "2026-10-05T20:15:00",
+    "image_filename": "honda_keys.jpg",
+    "data_source": "REAL_CURATED"
+  }
+]

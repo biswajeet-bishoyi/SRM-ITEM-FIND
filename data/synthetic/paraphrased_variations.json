@@ -1,0 +1,20 @@
+[
+  {
+    "pair_id": "PAIR_001",
+    "original": "I misplaced my black wireless Airdopes earbuds near the central library floor 2.",
+    "variations": [
+      "My black wireless earbuds went missing somewhere near the library second floor.",
+      "Lost a pair of dark Bluetooth earbuds around central library.",
+      "Cannot find my black wireless earpods after studying at central library."
+    ]
+  },
+  {
+    "pair_id": "PAIR_002",
+    "original": "Lost my dark blue Nike backpack with laptop inside near Tech Park Java Canteen.",
+    "variations": [
+      "My navy Nike bag containing laptop went missing at Java Canteen.",
+      "Left behind a blue Nike rucksack near Java Canteen in Tech Park.",
+      "Dark blue Nike bag misplaced at Tech Park canteen tables."
+    ]
+  }
+]

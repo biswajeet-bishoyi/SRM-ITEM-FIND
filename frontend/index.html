@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRM CampusFind — Multimodal Lost &amp; Found System</title>
+    <meta name="description" content="Intelligent multimodal lost-and-found system using GenAI, Transformer NLP, computer vision and geo-temporal fusion for SRM campus.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%236366f1%22/><path d=%22M10 22 L16 10 L22 22%22 stroke=%22white%22 stroke-width=%222.5%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=6">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <button class="burger-btn" id="burger-btn" aria-label="Open navigation menu" aria-controls="sidebar" aria-expanded="false">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-dot hidden" id="burger-dot"></span>
+        </button>
+
+        <a class="brand" href="#" onclick="openTab('tab-matching'); return false;">
+            <div class="brand-icon">
+                <!-- Bolt / lightning icon -->
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div>
+                <div class="brand-name">SRM CampusFind</div>
+                <div class="brand-sub">Multimodal GenAI Lost &amp; Found</div>
+            </div>
+        </a>
+
+        <div class="nav-status">
+            <span class="status-indicator"></span>
+            <span id="nav-status-text">Engine online</span>
+        </div>
+    </header>
+
+    <!-- Slide-out Navigation Menu -->
+    <aside class="sidebar" id="sidebar" aria-hidden="true">
+        <div class="sidebar-label">Navigation</div>
+        <nav class="nav-menu">
+            <button class="nav-btn active" data-tab="tab-matching">
+                <span class="icon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                </span>
+                <span class="nav-text"><strong>Multimodal Matching</strong><small>Search found items with AI</small></span>
+            </button>
+            <button class="nav-btn" data-tab="tab-report">
+                <span class="icon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                </span>
+                <span class="nav-text"><strong>Report Item</strong><small>Log a lost or found item</small></span>
+            </button>
+            <button class="nav-btn" data-tab="tab-notifications">
+                <span class="icon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </span>
+                <span class="nav-text"><strong>Notifications</strong><small>High-confidence alerts</small></span>
+                <span id="notif-badge" class="badge">0</span>
+            </button>
+            <button class="nav-btn" data-tab="tab-settings">
+                <span class="icon" aria-hidden="true">&#9881;</span>
+                <span class="nav-text"><strong>Settings</strong><small>Interface themes</small></span>
+            </button>
+        </nav>
+
+        <div class="system-status-card">
+            <div class="status-indicator"></div>
+            <div>
+                <div class="status-title">Vector Engine Online</div>
+                <div class="status-sub" id="stat-records">Loading index…</div>
+            </div>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="page-header">
+            <div class="header-titles">
+                <h1 id="page-title">Intelligent Multimodal Matching Engine</h1>
+                <p id="page-subtitle">Semantic NLP + Vision Encoder + Geo-Temporal Fusion + GenAI Explanations</p>
+            </div>
+        </div>
+
+        <!-- TAB 1: Multimodal Search & Matching -->
+        <section id="tab-matching" class="tab-content active">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">–</div>
+                    <div class="stat-label">Indexed reports</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value stat-lost" id="stat-lost">–</div>
+                    <div class="stat-label">Lost items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value stat-found" id="stat-found">–</div>
+                    <div class="stat-label">Found items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value stat-alerts" id="stat-alerts">0</div>
+                    <div class="stat-label">Match alerts</div>
+                </div>
+            </div>
+
+            <div class="grid-2col">
+                <!-- Query Input Card -->
+                <div class="card">
+                    <h3>Search for a Lost Item</h3>
+                    <p class="card-desc">Describe what you lost, or try a preset SRM campus scenario.</p>
+
+                    <div class="preset-pills">
+                        <button type="button" class="pill-btn" onclick="loadPreset(0)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                            Black Earbuds at Library
+                        </button>
+                        <button type="button" class="pill-btn" onclick="loadPreset(1)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                            Navy Nike Bag at Tech Park
+                        </button>
+                        <button type="button" class="pill-btn" onclick="loadPreset(2)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                            SRM ID Card at UB
+                        </button>
+                        <button type="button" class="pill-btn" onclick="loadPreset(3)">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            Apple Watch at Sports Complex
+                        </button>
+                    </div>
+
+                    <form id="search-form" onsubmit="executeSearch(event)">
+                        <div class="form-group">
+                            <label for="query-desc">Description</label>
+                            <textarea id="query-desc" rows="3" required placeholder="e.g. I misplaced my black wireless earbuds near the central library"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="query-cat">Category</label>
+                                <select id="query-cat">
+                                    <option value="electronics">Electronics</option>
+                                    <option value="bags">Bags &amp; Luggage</option>
+                                    <option value="documents">Documents &amp; IDs</option>
+                                    <option value="accessories">Accessories</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="query-color">Color</label>
+                                <input type="text" id="query-color" placeholder="e.g. black">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="query-location">Where did you lose it?</label>
+                                <select id="query-location" class="location-select"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="query-time">When?</label>
+                                <input type="datetime-local" id="query-time" value="2026-10-04T10:30">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Photo <span class="optional">(optional — enables visual matching)</span></label>
+                            <div class="dropzone">
+                                <input type="file" accept="image/*" class="dropzone-input" id="query-photo">
+                                <div class="dropzone-empty">
+                                    <span class="dropzone-icon">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                    </span>
+                                    <span><strong>Click to upload</strong> or drag a photo here</span>
+                                </div>
+                                <div class="dropzone-preview hidden">
+                                    <img alt="Selected photo preview">
+                                    <button type="button" class="dropzone-remove" aria-label="Remove photo">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            Run Multimodal Candidate Match
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Match Results Panel -->
+                <div class="card">
+                    <div class="results-head">
+                        <h3>Top Candidate Matches</h3>
+                        <span class="results-count" id="results-count"></span>
+                    </div>
+                    <div id="results-container">
+                        <div class="placeholder-state">
+                            <span class="placeholder-icon">
+                                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            </span>
+                            <p>Pick a preset or describe your item, then run a match to see AI-ranked found items with explanations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Report Item -->
+        <section id="tab-report" class="tab-content">
+            <div class="card max-w-760">
+                <h3>Item Details</h3>
+                <p class="card-desc">Submitting a report generates text and image embeddings and indexes the record in the vector database instantly.</p>
+
+                <form id="report-form" onsubmit="submitReport(event)">
+                    <div class="segmented" role="radiogroup" aria-label="Report type">
+                        <label>
+                            <input type="radio" name="rep-status" value="LOST" checked>
+                            <span>
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                I lost an item
+                            </span>
+                        </label>
+                        <label>
+                            <input type="radio" name="rep-status" value="FOUND">
+                            <span>
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polyline points="20 6 9 17 4 12"/></svg>
+                                I found an item
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rep-desc">Description</label>
+                        <textarea id="rep-desc" rows="3" required placeholder="e.g. Grey HP laptop in a black sleeve with stickers on the lid"></textarea>
+                    </div>
+
+                    <div class="form-row form-row-3">
+                        <div class="form-group">
+                            <label for="rep-category">Category</label>
+                            <select id="rep-category">
+                                <option value="electronics">Electronics</option>
+                                <option value="bags">Bags</option>
+                                <option value="documents">Documents</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rep-brand">Brand</label>
+                            <input type="text" id="rep-brand" placeholder="e.g. Apple, Boat">
+                        </div>
+                        <div class="form-group">
+                            <label for="rep-color">Color</label>
+                            <input type="text" id="rep-color" placeholder="e.g. Black">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rep-location">Campus location</label>
+                            <select id="rep-location" class="location-select"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rep-location-detail">Exact spot <span class="optional">(optional)</span></label>
+                            <input type="text" id="rep-location-detail" placeholder="e.g. 2nd floor, near lab 602">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Photo <span class="optional">(recommended)</span></label>
+                        <div class="dropzone">
+                            <input type="file" accept="image/*" class="dropzone-input" id="rep-photo">
+                            <div class="dropzone-empty">
+                                <span class="dropzone-icon">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                </span>
+                                <span><strong>Click to upload</strong> or drag a photo here</span>
+                            </div>
+                            <div class="dropzone-preview hidden">
+                                <img alt="Selected photo preview">
+                                <button type="button" class="dropzone-remove" aria-label="Remove photo">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        Publish Report &amp; Index Vector
+                    </button>
+                    <div id="report-status" class="form-status hidden" role="status"></div>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 3: Notifications -->
+        <section id="tab-notifications" class="tab-content">
+            <div class="card">
+                <div class="notif-header">
+                    <div>
+                        <h3>Match Notification Ledger</h3>
+                        <p class="card-desc">Alerts triggered when a candidate's multimodal confidence score reaches the 0.50 threshold.</p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" id="clear-notifs-btn" onclick="clearNotifications()" style="display:none;">
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                        Clear All
+                    </button>
+                </div>
+                <div id="notif-list">
+                    <div class="placeholder-state">
+                        <span class="placeholder-icon">
+                            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+                        </span>
+                        <p>No notifications triggered yet. Run a match search to generate alerts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-settings" class="tab-content">
+            <div class="card theme-card max-w-760">
+                <h3>Appearance</h3>
+                <p class="card-desc">Choose a color palette for CampusFind.</p>
+                <div class="theme-grid" role="group" aria-label="Color themes">
+                    <button type="button" class="theme-option" data-theme="spider" aria-pressed="false"><span class="theme-swatch swatch-spider" aria-hidden="true"></span><span class="theme-option-copy"><strong>Spider-Man</strong><small>Cherry red, black, blue accents</small></span></button>
+                    <button type="button" class="theme-option" data-theme="formal" aria-pressed="false"><span class="theme-swatch swatch-formal" aria-hidden="true"></span><span class="theme-option-copy"><strong>Formal</strong><small>Forest, graphite, and brass</small></span></button>
+                    <button type="button" class="theme-option" data-theme="white" aria-pressed="false"><span class="theme-swatch swatch-white" aria-hidden="true"></span><span class="theme-option-copy"><strong>White</strong><small>Bright neutral with jade accents</small></span></button>
+                    <button type="button" class="theme-option" data-theme="cyberpunk" aria-pressed="false"><span class="theme-swatch swatch-cyberpunk" aria-hidden="true"></span><span class="theme-option-copy"><strong>Cyberpunk</strong><small>Charcoal, electric lime, and cyan</small></span></button>
+                    <button type="button" class="theme-option" data-theme="aot" aria-pressed="false"><span class="theme-swatch swatch-aot" aria-hidden="true"></span><span class="theme-option-copy"><strong>AOT</strong><small>Field olive, stone, and oxblood</small></span></button>
+                    <button type="button" class="theme-option" data-theme="tsushima" aria-pressed="false"><span class="theme-swatch swatch-tsushima" aria-hidden="true"></span><span class="theme-option-copy"><strong>Tsushima / Kurosawa</strong><small>Ink, paper, and vermilion</small></span></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/app.js?v=6"></script>
+</body>
+</html>
