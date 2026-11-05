@@ -4,7 +4,3 @@ version = "1.0.0"
 description = "Intelligent Multimodal Lost-and-Found System using GenAI"
 readme = "README.md"
 requires-python = ">=3.9"
-
-[tool.vercel]
-entrypoint = "backend.main:app"
-
