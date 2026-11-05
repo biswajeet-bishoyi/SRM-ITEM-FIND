@@ -564,13 +564,22 @@ async function submitReport(event) {
     const loc    = CAMPUS_LOCATIONS[document.getElementById("rep-location").value];
     const detail = document.getElementById("rep-location-detail").value.trim();
     const userTime = document.getElementById("rep-time")?.value || localTimestamp();
+    const brand = document.getElementById("rep-brand").value.trim() || "unknown";
+    const color = document.getElementById("rep-color").value.trim() || "unspecified";
+    const category = document.getElementById("rep-category").value;
+
+    let desc = document.getElementById("rep-desc")?.value?.trim() || "";
+    if (!desc) {
+        const parts = [color !== "unspecified" ? color : "", brand !== "unknown" ? brand : "", category, `near ${loc.name}`];
+        desc = parts.filter(Boolean).join(" ");
+    }
 
     const payload = {
         status:        status,
-        description:   document.getElementById("rep-desc").value,
-        category:      document.getElementById("rep-category").value,
-        brand:         document.getElementById("rep-brand").value  || "unknown",
-        color:         document.getElementById("rep-color").value  || "unspecified",
+        description:   desc,
+        category:      category,
+        brand:         brand,
+        color:         color,
         location_name: detail ? `${loc.name}, ${detail}` : loc.name,
         coordinates:   loc.coords,
         timestamp:     userTime,
@@ -586,7 +595,19 @@ async function submitReport(event) {
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error(`server returned ${res.status}`);
+        if (!res.ok) {
+            let errorMsg = `server returned ${res.status}`;
+            try {
+                const errJson = await res.json();
+                errorMsg = errJson.detail || errJson.message || errJson.error || errorMsg;
+            } catch(e) {
+                try {
+                    const text = await res.text();
+                    if (text) errorMsg = text.slice(0, 200);
+                } catch(e) {}
+            }
+            throw new Error(errorMsg);
+        }
         const data      = await res.json();
         const photoNote = data.record.image_url ? " with photo" : "";
         
