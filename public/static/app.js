@@ -269,7 +269,8 @@ function saveUserReportLocally(rec) {
 
 async function fetchDatasetInfo() {
     try {
-        const res  = await fetch("/api/dataset");
+        let res = await fetch("/api/dataset");
+        if (!res.ok) res = await fetch("/dataset");
         const data = await res.json();
         const serverRecords = data.records || [];
         const localRecords = getLocalUserReports();
@@ -456,11 +457,18 @@ async function executeSearch(event) {
     container.innerHTML = `<div class="loader"><div class="spinner"></div>Fusing text, vision &amp; geo-temporal embeddings…</div>`;
 
     try {
-        const res = await fetch("/api/search/matches", {
+        let res = await fetch("/api/search/matches", {
             method:  "POST",
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify(payload)
         });
+        if (!res.ok) {
+            res = await fetch("/search/matches", {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify(payload)
+            });
+        }
         if (!res.ok) throw new Error(`server returned ${res.status}`);
 
         const data = await res.json();
@@ -710,15 +718,22 @@ async function submitReport(event) {
     saveUserReportLocally(optimisticRecord);
     allCatalogRecords = [optimisticRecord, ...allCatalogRecords.filter(r => r.id !== optimisticRecord.id)];
 
-    const endpoint  = status === "LOST" ? "/api/report/lost" : "/api/report/found";
+    const endpoints = status === "LOST" ? ["/api/report/lost", "/report/lost"] : ["/api/report/found", "/report/found"];
     const submitBtn = form.querySelector("button[type=submit]");
     submitBtn.disabled = true;
     try {
-        const res = await fetch(endpoint, {
+        let res = await fetch(endpoints[0], {
             method:  "POST",
             headers: { "Content-Type": "application/json" },
             body:    JSON.stringify(payload)
         });
+        if (!res.ok) {
+            res = await fetch(endpoints[1], {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify(payload)
+            });
+        }
         if (!res.ok) {
             let errorMsg = `server returned ${res.status}`;
             try {
@@ -784,7 +799,8 @@ function showReportStatus(message, isError) {
 
 async function fetchNotifications() {
     try {
-        const res  = await fetch("/api/notifications");
+        let res  = await fetch("/api/notifications");
+        if (!res.ok) res = await fetch("/notifications");
         const data = await res.json();
         localNotifications = (data.notifications || []).slice().reverse();
         renderNotifications();
