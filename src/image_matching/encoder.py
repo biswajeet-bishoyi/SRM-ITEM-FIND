@@ -172,11 +172,17 @@ class ImageEncoder:
         if not data_url:
             return None
         try:
+            from PIL import ImageFile
+            ImageFile.LOAD_TRUNCATED_IMAGES = True
             encoded = data_url.split(",", 1)[1] if "," in data_url else data_url
             img = Image.open(io.BytesIO(base64.b64decode(encoded)))
-            img = ImageOps.exif_transpose(img)
+            try:
+                img = ImageOps.exif_transpose(img)
+            except Exception:
+                pass
             return img.convert("RGB")
-        except Exception:
+        except Exception as e:
+            print(f"[decode_data_url warning]: {e}")
             return None
 
     def predict_similarity(self, img1_input: Union[str, Image.Image], img2_input: Union[str, Image.Image]) -> Optional[float]:

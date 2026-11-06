@@ -423,10 +423,8 @@ def search_matches(req: SearchMatchRequest):
                 vector_db.add_record(urec, u_t_emb, u_i_emb)
 
     q_t_emb = text_encoder.encode(req.query_description)
-    query_img = ImageEncoder.decode_data_url(req.image_data)
-    if req.image_data and query_img is None:
-        raise HTTPException(status_code=400, detail="Uploaded photo could not be read as an image.")
-    q_i_emb = image_encoder.encode(query_img)  # None when no photo was uploaded
+    query_img = ImageEncoder.decode_data_url(req.image_data) if req.image_data else None
+    q_i_emb = image_encoder.encode(query_img) if query_img else None
     
     # Configure custom fusion weights if provided
     custom_fusion = MultimodalFusionEngine(req.weights) if req.weights else fusion_engine
