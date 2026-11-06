@@ -18,6 +18,13 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+from src.image_matching.encoder import ImageEncoder
+from src.text_matching.encoder import TransformerTextEncoder
+from src.retrieval.vector_db import VectorDatabase
+from src.notification.notifier import NotificationManager
+from src.multimodal.fusion import MultimodalFusionEngine, compute_location_similarity, compute_time_similarity, compute_attribute_similarity
+from src.genai.explanation_generator import GenAIExplanationEngine, GenAINormalizerEngine, GenAISyntheticDataGenerator
+
 app = FastAPI(
     title="SRM CampusFind API",
     description="Intelligent Multimodal Lost-and-Found System using GenAI",
